@@ -18,7 +18,7 @@ export function renderHeading(
     if (block._type !== "block" || !block.children) return [];
     return block.children.map((span) =>
       span.marks?.includes("em") ? (
-        <em key={span._key} className="italic text-eh-sand">
+        <em key={span._key} className="italic text-brand">
           {span.text}
         </em>
       ) : (

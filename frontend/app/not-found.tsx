@@ -1,5 +1,5 @@
 import Header from "@/components/header";
-import Footer2 from "@/components/footer/footer-2";
+import Footer from "@/components/footer/footer";
 import Custom404 from "@/components/404";
 
 import type { Metadata } from "next";
@@ -13,7 +13,7 @@ export default function NotFoundPage() {
     <>
       <Header />
       <Custom404 />
-      <Footer2 />
+      <Footer />
     </>
   );
 }

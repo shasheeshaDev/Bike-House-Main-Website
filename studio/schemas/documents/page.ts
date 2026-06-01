@@ -160,6 +160,9 @@ export default defineType({
       type: "array",
       group: "content",
       of: [
+        // Bike House blocks
+        { type: "page-hero" },
+        // Legacy template blocks
         { type: "banner-1" },
         { type: "banner-2" },
         { type: "banner-3" },

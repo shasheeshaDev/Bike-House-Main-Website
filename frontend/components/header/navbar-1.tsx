@@ -4,28 +4,44 @@ import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { urlFor } from "@/sanity/lib/image";
 import { cn } from "@/lib/utils";
-import type { HEADER_QUERYResult, SETTINGS_QUERYResult } from "@/sanity.types";
+import type { HeaderData } from "@/sanity/queries/header";
 
-interface Navbar1Props {
-  settings: SETTINGS_QUERYResult;
-  navigation: HEADER_QUERYResult;
-  className?: string;
+// ─── Icons ────────────────────────────────────────────────────────────────────
+
+function PhoneIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z" />
+    </svg>
+  );
 }
 
-// Pages where the nav starts transparent (full-screen hero behind it)
-const HERO_PATHS = ["/"];
+// Arrow used inside the CTA button, matching design's .btn .arrow
+function Arrow() {
+  return (
+    <span aria-hidden="true" className="inline-flex items-center shrink-0">
+      <svg width="18" height="8" viewBox="0 0 18 8" fill="none">
+        <line x1="0" y1="4" x2="14" y2="4" stroke="currentColor" strokeWidth="1" />
+        <polyline points="10,1 14,4 10,7" fill="none" stroke="currentColor" strokeWidth="1" />
+      </svg>
+    </span>
+  );
+}
 
-export default function Navbar1({ settings, navigation, className }: Navbar1Props) {
-  const pathname = usePathname();
+// ─── Component ────────────────────────────────────────────────────────────────
+
+interface NavbarProps {
+  navigation: HeaderData;
+}
+
+export default function Navbar({ navigation }: NavbarProps) {
+  const pathname  = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const isHeroPage = HERO_PATHS.includes(pathname);
-
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 60);
+    const onScroll = () => setScrolled(window.scrollY > 20);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -36,205 +52,207 @@ export default function Navbar1({ settings, navigation, className }: Navbar1Prop
     return () => { document.body.style.overflow = ""; };
   }, [menuOpen]);
 
-  // "light" = non-hero page AND not yet scrolled → cream bg, dark text
-  const isLight = !isHeroPage && !scrolled;
+  useEffect(() => { setMenuOpen(false); }, [pathname]);
 
   const close = () => setMenuOpen(false);
 
+  const links   = navigation?.links   ?? [];
+  const ctaLink = navigation?.ctaLinks?.[0] ?? null;
+  const phone   = navigation?.phone   ?? null;
+  const phoneHref = phone ? `tel:+${phone.replace(/\D/g, "")}` : null;
+
   return (
     <>
-      {/* ── Main nav bar ── */}
-      <nav
+      {/* ── Fixed header bar ──────────────────────────────────────────────── */}
+      <header
         className={cn(
-          "fixed top-0 left-0 right-0 z-50 flex items-center justify-between h-[72px]",
-          "px-5 md:px-10 lg:px-[60px]",
-          "transition-[background,box-shadow] duration-[400ms] ease-in-out",
+          "fixed inset-x-0 top-0 z-100 py-4.5",
+          "border-b border-line-soft",
+          "transition-[background] duration-300",
           scrolled
-            ? "bg-[#0A1628] shadow-[0_1px_0_rgba(184,151,90,0.2)]"
-            : isLight
-              ? "bg-[#FDFBF8] shadow-[0_1px_0_rgba(0,0,0,0.08)]"
-              : "bg-transparent",
-          className
+            ? "bg-[rgba(8,8,9,0.85)] backdrop-blur-[14px] backdrop-saturate-150"
+            : "bg-[rgba(10,10,11,0.6)] backdrop-blur-[14px] backdrop-saturate-140"
         )}
       >
-        {/* Logo — show logoDark on cream nav, logo on transparent/navy */}
-        <Link href="/" onClick={close} className="flex items-center shrink-0">
-          {isLight && settings?.logoDark?.asset ? (
-            <Image
-              src={urlFor(settings.logoDark).url()}
-              alt={settings.logoDark.alt ?? "Elevate Hospitality"}
-              width={160}
-              height={44}
-              className="h-[44px] w-auto object-contain transition-opacity duration-300"
-              priority
-            />
-          ) : settings?.logo?.asset ? (
-            <Image
-              src={urlFor(settings.logo).url()}
-              alt={settings.logo.alt ?? "Elevate Hospitality"}
-              width={160}
-              height={44}
-              className="h-[44px] w-auto object-contain transition-opacity duration-300"
-              priority
-            />
-          ) : null}
-        </Link>
+        {/* .container .nav — flex, space-between, gap 32px */}
+        <div className="container flex items-center justify-between gap-8">
 
-        <div className="flex items-center justify-end gap-8">
-          {/* Desktop links */}
-          {navigation?.links && navigation.links.length > 0 && (
-            <ul className="hidden lg:flex items-center gap-9 list-none m-0 p-0">
-              {navigation.links.map((item) => {
-                const linkClass = cn(
-                  "font-dmSans text-[13px] font-medium tracking-[0.08em] uppercase transition-colors duration-200",
-                  isLight ? "text-eh-charcoal hover:text-eh-gold" : "text-white/80 hover:text-eh-gold"
-                );
+          {/* .nav-brand */}
+          <Link
+            href="/"
+            onClick={close}
+            className="flex items-center gap-3 shrink-0"
+            aria-label="Bike House home"
+          >
+            {navigation?.logo?.asset?.url ? (
+              <Image
+                src={navigation.logo.asset.url}
+                alt={navigation.logo.alt ?? "Bike House"}
+                width={38}
+                height={38}
+                className="w-9.5 h-9.5 object-contain"
+                priority
+              />
+            ) : (
+              /* Static fallback until logo is uploaded to Sanity */
+              <Image
+                src="/logo/logo.png"
+                alt="Bike House"
+                width={38}
+                height={38}
+                className="w-9.5 h-9.5 object-contain"
+                priority
+              />
+            )}
+            <div>
+              {/* .nav-brand-text */}
+              <div className="font-display text-[22px] leading-none tracking-[0.04em] text-ink uppercase">
+                BIKE HOUSE
+              </div>
+              {/* .nav-brand-text small */}
+              <div className="font-mono text-[9px] tracking-[0.25em] text-brand mt-0.5 uppercase">
+                PILIYANDALA · EST 2014
+              </div>
+            </div>
+          </Link>
 
-                if (item._type === "link-group") {
+          {/* .nav-links — hidden below 1080px */}
+          {links.length > 0 && (
+            <nav className="hidden min-[1080px]:flex" aria-label="Main navigation">
+              <ul className="flex gap-1 list-none m-0 p-0">
+                {links.map((link) => {
+                  const isActive = pathname === link.href;
                   return (
-                    <li key={item._key} className="relative group">
-                      <button
-                        type="button"
-                        className={cn(linkClass, "flex items-center gap-1 border-none bg-transparent p-0 cursor-pointer")}
+                    <li key={link._key}>
+                      <Link
+                        href={link.href ?? "#"}
+                        target={link.isExternal && link.target ? "_blank" : undefined}
+                        className={cn(
+                          "relative block px-3.5 py-2.5",
+                          "font-condensed text-[14px] font-medium tracking-[0.15em] uppercase",
+                          "transition-colors duration-200",
+                          isActive ? "text-ink" : "text-ink-dim hover:text-ink"
+                        )}
                       >
-                        {item.title}
-                        <svg className="w-3 h-3 transition-transform duration-200 group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                        </svg>
-                      </button>
-                      {item.links && item.links.length > 0 && (
-                        <div className="absolute top-full left-0 pt-3 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-opacity duration-200">
-                          <ul className="bg-[#0A1628] border border-[#B8975A]/20 min-w-[180px] py-2 flex flex-col">
-                            {item.links.map((sub) => (
-                              <li key={sub._key}>
-                                <Link
-                                  href={sub.href ?? "#"}
-                                  target={sub.target ? "_blank" : undefined}
-                                  className="block px-5 py-3 font-dmSans text-[12px] font-medium tracking-[0.08em] uppercase text-white/70 hover:text-eh-gold hover:bg-white/5 transition-colors duration-200"
-                                >
-                                  {sub.label}
-                                </Link>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      )}
+                        {link.label}
+                        {isActive && (
+                          <span
+                            aria-hidden="true"
+                            className="absolute bottom-0 left-3.5 right-3.5 h-px bg-brand"
+                          />
+                        )}
+                      </Link>
                     </li>
                   );
-                }
-
-                return (
-                  <li key={item._key}>
-                    <Link
-                      href={item.href ?? "#"}
-                      target={item.target ? "_blank" : undefined}
-                      className={linkClass}
-                    >
-                      {item.label}
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
+                })}
+              </ul>
+            </nav>
           )}
 
-          {/* Desktop CTA + mobile hamburger */}
-          <div className="flex items-center gap-4">
-            {/* CTA button — desktop only */}
-            {navigation?.ctaLinks && navigation.ctaLinks.length > 0 && (
-              <div className="hidden lg:flex items-center">
-                {navigation.ctaLinks.map((cta) => (
-                  <Link
-                    key={cta._key}
-                    href={cta.href ?? "#"}
-                    target={cta.target ? "_blank" : undefined}
-                    className="font-dmSans text-[12px] font-semibold tracking-[0.12em] uppercase bg-eh-gold text-eh-navy px-6 py-[10px] hover:bg-eh-goldLight transition-colors duration-200"
-                  >
-                    {cta.label}
-                  </Link>
-                ))}
-              </div>
+          {/* .nav-cta — phone + CTA button + burger */}
+          <div className="flex items-center gap-[14px]">
+
+            {/* .nav-phone — desktop only */}
+            {phone && phoneHref && (
+              <a
+                href={phoneHref}
+                className="hidden min-[1080px]:flex items-center gap-2 font-mono text-[13px] text-ink hover:text-brand transition-colors duration-200"
+              >
+                <span className="text-brand"><PhoneIcon /></span>
+                {phone}
+              </a>
             )}
-          </div>
 
-          {/* Hamburger — mobile only */}
-          <button
-            type="button"
-            className="flex lg:hidden flex-col gap-[5px] p-2 -mr-2 bg-transparent border-none cursor-pointer"
-            onClick={() => setMenuOpen((v) => !v)}
-            aria-label={menuOpen ? "Close menu" : "Open menu"}
-          >
-            {[0, 1, 2].map((i) => (
-              <span
-                key={i}
-                className={cn(
-                  "block w-6 h-[2px] transition-all duration-300 origin-center",
-                  isLight ? "bg-eh-charcoal" : "bg-white",
-                  i === 0 && menuOpen && "translate-y-[7px] rotate-45",
-                  i === 1 && menuOpen && "opacity-0 scale-x-0",
-                  i === 2 && menuOpen && "-translate-y-[7px] -rotate-45"
-                )}
-              />
-            ))}
-          </button>
-        </div>
-      </nav>
+            {/* .btn .btn-small — desktop only */}
+            {ctaLink && (
+              <Link
+                href={ctaLink.href ?? "#"}
+                className="hidden min-[1080px]:inline-flex items-center gap-3 px-4 py-[10px] font-condensed text-[12px] font-semibold tracking-[0.15em] uppercase bg-brand text-white border border-brand rounded-sm hover:-translate-y-px hover:shadow-[0_12px_32px_-12px_var(--red)] transition-all duration-300 whitespace-nowrap"
+              >
+                {ctaLink.label}
+                <Arrow />
+              </Link>
+            )}
 
-      {/* ── Mobile menu ── */}
-      <div
-        className={cn(
-          "fixed top-[72px] left-0 right-0 z-40 lg:hidden",
-          "bg-[#0A1628]/98 backdrop-blur-md border-t border-[#B8975A]/20",
-          "flex flex-col px-8 pt-6 pb-8",
-          "transition-all duration-300 ease-in-out",
-          menuOpen ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 -translate-y-2 pointer-events-none"
-        )}
-      >
-        {navigation?.links?.map((item) => {
-          if (item._type === "link-group") {
-            return (
-              <div key={item._key}>
-                <span className="block font-dmSans text-[15px] font-medium tracking-[0.08em] uppercase text-white/50 py-4 border-b border-white/[0.07]">
-                  {item.title}
-                </span>
-                {item.links?.map((sub) => (
-                  <Link
-                    key={sub._key}
-                    href={sub.href ?? "#"}
-                    onClick={close}
-                    className="block font-dmSans text-[13px] font-medium tracking-[0.08em] uppercase text-white/70 hover:text-eh-gold pl-4 py-3 border-b border-white/[0.05] transition-colors duration-200"
-                  >
-                    {sub.label}
-                  </Link>
-                ))}
+            {/* .nav-burger — visible below 1080px */}
+            <button
+              type="button"
+              onClick={() => setMenuOpen((v) => !v)}
+              aria-label={menuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={menuOpen}
+              className="flex min-[1080px]:hidden items-center justify-center w-11 h-11 border border-line rounded-sm bg-transparent cursor-pointer"
+            >
+              <div className="flex flex-col gap-[6px]">
+                <span className={cn("block w-[18px] h-px bg-ink transition-all duration-300 origin-center", menuOpen && "translate-y-[7px] rotate-45")} />
+                <span className={cn("block w-[18px] h-px bg-ink transition-all duration-300",                menuOpen && "opacity-0 scale-x-0")} />
+                <span className={cn("block w-[18px] h-px bg-ink transition-all duration-300 origin-center", menuOpen && "-translate-y-[7px] -rotate-45")} />
               </div>
-            );
-          }
+            </button>
+          </div>
+        </div>
+      </header>
 
+      {/* ── Full-screen mobile menu ─────────────────────────────────────────
+          Design: fixed inset-0, bg var(--bg), z-200
+          padding: 100px var(--gutter) 40px
+          transform: translateY(-100%) closed → translateY(0) open
+          transition: .5s cubic-bezier(.16,1,.3,1)                          */}
+      <div
+        aria-hidden={!menuOpen}
+        className={cn(
+          "fixed inset-0 z-[200] min-[1080px]:hidden",
+          "flex flex-col gap-2 bg-background",
+          "transition-transform duration-500",
+          menuOpen ? "translate-y-0" : "-translate-y-full"
+        )}
+        style={{
+          padding: "100px clamp(20px,4vw,56px) 40px",
+          transitionTimingFunction: "cubic-bezier(.16,1,.3,1)",
+        }}
+      >
+        {/* .mobile-close */}
+        <button
+          type="button"
+          onClick={close}
+          aria-label="Close menu"
+          className="absolute top-6 flex items-center justify-center w-11 h-11 border border-line bg-transparent text-ink rounded-sm hover:bg-brand hover:border-brand transition-colors duration-200 text-lg"
+          style={{ right: "clamp(20px,4vw,56px)" }}
+        >
+          ×
+        </button>
+
+        {/* Nav links — Anton, clamp(42px,9vw,72px), ink-dim → red */}
+        {links.map((link) => {
+          const isActive = pathname === link.href;
           return (
             <Link
-              key={item._key}
-              href={item.href ?? "#"}
-              target={item.target ? "_blank" : undefined}
+              key={link._key}
+              href={link.href ?? "#"}
               onClick={close}
-              className="font-dmSans text-[15px] font-medium tracking-[0.08em] uppercase text-white/80 hover:text-eh-gold py-4 border-b border-white/[0.07] transition-colors duration-200"
+              className={cn(
+                "font-display text-[clamp(42px,9vw,72px)] uppercase tracking-[0.01em]",
+                "py-[10px] border-b border-line-soft",
+                "transition-colors duration-200",
+                isActive ? "text-brand" : "text-ink-dim hover:text-brand"
+              )}
             >
-              {item.label}
+              {link.label}
             </Link>
           );
         })}
 
-        {/* CTA in mobile menu */}
-        {navigation?.ctaLinks?.map((cta) => (
-          <Link
-            key={cta._key}
-            href={cta.href ?? "#"}
-            onClick={close}
-            className="mt-4 font-dmSans text-[12px] font-semibold tracking-[0.12em] uppercase bg-eh-gold text-eh-navy text-center py-4 px-6 hover:bg-eh-goldLight transition-colors duration-200"
-          >
-            {cta.label}
-          </Link>
-        ))}
+        {/* Phone — Anton 24px, red, at the bottom */}
+        {phone && phoneHref && (
+          <div className="mt-8 font-mono text-[12px] text-ink-mute tracking-[0.18em]">
+            <a
+              href={phoneHref}
+              className="font-display text-[24px] text-brand tracking-[0.04em] hover:text-brand-deep transition-colors duration-200"
+              style={{ textTransform: "none" }}
+            >
+              {phone}
+            </a>
+          </div>
+        )}
       </div>
     </>
   );

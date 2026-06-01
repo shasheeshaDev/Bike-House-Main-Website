@@ -1,98 +1,67 @@
 import plugin from "tailwindcss/plugin";
 import { typographyBlockConfig } from "../configs/typography.config";
 
-/**
- * Typography Plugin
- *
- * Generates utility classes for typography based on typography.config.ts
- *
- * Generated classes:
- * - .h1, .h2, .h3, .h4, .h5, .h6
- * - .xs-para, .s-para, .para, .l-para, .xl-para, .footer-para
- * - .eyebrow-heading, .menu-item, .sub-menu-item, .cta-heading, .cta-para
- * - .main-list-item, .sub-list-item
- * - .anchor
- *
- * Supported properties:
- * - fontFamily, fontSize, fontWeight, lineHeight, color, marginBottom, textDecoration, transition
- *
- * All classes support responsive breakpoints
- */
+const toKebabCase = (str: string): string =>
+  str.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase();
 
-// Helper to convert camelCase to kebab-case
-const toKebabCase = (str: string): string => {
-	return str.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase();
-};
+const SUPPORTED_PROPS = [
+  "fontFamily",
+  "fontSize",
+  "fontWeight",
+  "lineHeight",
+  "letterSpacing",
+  "textTransform",
+  "textDecoration",
+  "color",
+  "marginBottom",
+  "transition",
+] as const;
 
-// Helper to generate CSS properties from config
+const SCREENS = {
+  sm:    "640px",
+  md:    "768px",
+  lg:    "1024px",
+  xl:    "1280px",
+  "2xl": "1536px",
+} as const;
+
+type ScreenKey = keyof typeof SCREENS;
+
 const generateCSSProperties = (
-	blockConfig: any,
-	breakpoint?: string
+  blockConfig: Record<string, any>,
+  breakpoint?: string,
 ): Record<string, string> => {
-	const cssProps: Record<string, string> = {};
-
-	// Simple properties that map directly to CSS
-	const simpleProperties = [
-		"fontFamily",
-		"fontSize",
-		"fontWeight",
-		"lineHeight",
-		"color",
-		"marginBottom",
-		"textDecoration",
-		"transition",
-	];
-
-	simpleProperties.forEach((prop) => {
-		if (blockConfig[prop]) {
-			const value = breakpoint
-				? blockConfig[prop][breakpoint]
-				: blockConfig[prop].default;
-			if (value) {
-				const cssProp = toKebabCase(prop);
-				cssProps[cssProp] = value;
-			}
-		}
-	});
-
-	return cssProps;
+  const cssProps: Record<string, string> = {};
+  for (const prop of SUPPORTED_PROPS) {
+    const cfg = blockConfig[prop];
+    if (!cfg) continue;
+    const value: string | undefined = breakpoint ? cfg[breakpoint] : cfg.default;
+    if (value) cssProps[toKebabCase(prop)] = value;
+  }
+  return cssProps;
 };
 
-export const typographyPlugin = plugin(function ({ addComponents, theme }) {
-	const screens = theme("screens") as Record<string, string>;
-	const breakpoints = ["default", "sm", "md", "lg", "xl", "2xl"];
+export const typographyPlugin = plugin(function ({ addComponents }) {
+  const components: Record<string, any> = {};
 
-	// Generate typography component styles
-	const typographyComponents: Record<string, any> = {};
+  for (const [blockName, blockConfig] of Object.entries(typographyBlockConfig.blocks)) {
+    const className = `.${toKebabCase(blockName)}`;
+    const styles: Record<string, any> = {};
 
-	Object.entries(typographyBlockConfig.blocks).forEach(([blockName, blockConfig]) => {
-		const className = `.${toKebabCase(blockName)}`;
+    // Base (default) styles
+    Object.assign(styles, generateCSSProperties(blockConfig));
 
-		// Base responsive styles object
-		const responsiveStyles: Record<string, any> = {};
+    // Responsive overrides — use explicit @media queries (Tailwind v4 compatible)
+    for (const bp of Object.keys(SCREENS) as ScreenKey[]) {
+      const bpStyles = generateCSSProperties(blockConfig, bp);
+      if (Object.keys(bpStyles).length > 0) {
+        const query = `@media (min-width: ${SCREENS[bp]})`;
+        styles[query] = { ...styles[query], ...bpStyles };
+      }
+    }
 
-		// Default styles
-		const defaultStyles = generateCSSProperties(blockConfig, "default");
-		Object.assign(responsiveStyles, defaultStyles);
+    components[className] = styles;
+  }
 
-		// Generate responsive styles for each breakpoint
-		breakpoints.slice(1).forEach((breakpoint) => {
-			const breakpointStyles = generateCSSProperties(blockConfig, breakpoint);
-
-			if (Object.keys(breakpointStyles).length > 0) {
-				const screenSize = breakpoint === "2xl" ? screens["2xl"] : screens[breakpoint];
-				if (!responsiveStyles[`@media (min-width: ${screenSize})`]) {
-					responsiveStyles[`@media (min-width: ${screenSize})`] = {};
-				}
-				Object.assign(
-					responsiveStyles[`@media (min-width: ${screenSize})`],
-					breakpointStyles
-				);
-			}
-		});
-
-		typographyComponents[className] = responsiveStyles;
-	});
-
-	addComponents(typographyComponents);
+  addComponents(components);
 });

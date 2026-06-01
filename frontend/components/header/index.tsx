@@ -1,18 +1,9 @@
-import {
-  fetchSanityBanner,
-  fetchSanitySettings,
-  fetchSanityHeader,
-} from "@/sanity/lib/fetch";
-import Navbar1 from "./navbar-1";
+import { fetchSanityHeader } from "@/sanity/lib/fetch";
+import Navbar from "./navbar-1";
 
+// Logo and phone are now included in the header GROQ query,
+// so a separate settings fetch is no longer needed.
 export default async function Header() {
-  const banner = await fetchSanityBanner();
-  const settings = await fetchSanitySettings();
   const navigation = await fetchSanityHeader();
-
-  return (
-    <>
-      <Navbar1 settings={settings} navigation={navigation} />
-    </>
-  );
+  return <Navbar navigation={navigation} />;
 }

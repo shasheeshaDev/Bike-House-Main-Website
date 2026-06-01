@@ -1,6 +1,22 @@
 import { groq } from "next-sanity";
 import { imageQuery } from "./shared/image";
 
+// ─── Bike House prefooter CTA type ───────────────────────────────────────────
+// Manually typed to match the updated settings schema.
+// Run `pnpm typegen` after connecting Sanity to regenerate.
+
+export type PrefooterCtaData = {
+  eyebrowLabel:        string | null;
+  heading:             string | null;
+  description:         string | null;
+  primaryButtonLabel:  string | null;
+  primaryButtonHref:   string | null;
+  secondaryButtonLabel: string | null;
+  secondaryButtonHref: string | null;
+} | null;
+
+// ─── GROQ query ───────────────────────────────────────────────────────────────
+
 export const SETTINGS_QUERY = groq`*[_type == "settings"][0]{
   _type,
   siteName,
@@ -25,14 +41,11 @@ export const SETTINGS_QUERY = groq`*[_type == "settings"][0]{
   },
   prefooterCta{
     eyebrowLabel,
-    heading[]{
-      ...
-    },
+    heading,
     description,
-    buttonLabel,
-    buttonHref,
-    backgroundImage{
-      ${imageQuery}
-    }
+    primaryButtonLabel,
+    primaryButtonHref,
+    secondaryButtonLabel,
+    secondaryButtonHref
   }
 }`;

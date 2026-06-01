@@ -1,5 +1,8 @@
 import { PAGE_QUERYResult } from "@/sanity.types";
 
+// Bike House blocks
+import BhPageHero from "@/components/blocks/page-hero/page-hero";
+
 // Banner components
 import HeroBanner from "@/components/blocks/banner/hero-banner";
 import CtaBanner from "@/components/blocks/banner/cta-banner";
@@ -55,6 +58,9 @@ import CollectionBlock1 from "@/components/blocks/collection/collection-block-1"
 type Block = NonNullable<NonNullable<PAGE_QUERYResult>["blocks"]>[number];
 
 const componentMap: Record<string, React.ComponentType<any>> = {
+  // Bike House blocks
+  "page-hero": BhPageHero,
+
   // Banner blocks
   "banner-1": HeroBanner,
   "banner-2": CtaBanner,

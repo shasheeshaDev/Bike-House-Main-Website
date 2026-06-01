@@ -1,201 +1,203 @@
 import plugin from "tailwindcss/plugin";
 import { containerConfig } from "../configs/container.config";
 
+// Tailwind v4: use explicit @media queries instead of the v3 @screen shorthand.
+const SCREENS = {
+  sm:  "640px",
+  md:  "768px",
+  lg:  "1024px",
+  xl:  "1280px",
+  "2xl": "1536px",
+} as const;
+
+type ScreenKey = keyof typeof SCREENS;
+
 export const containerPlugin = plugin(function ({ addComponents }) {
-	// Guard clause
-	if (!containerConfig?.containers || typeof containerConfig.containers !== "object") {
-		console.error("containerConfig.containers is not defined or is not an object");
-		return;
-	}
+  if (!containerConfig?.containers || typeof containerConfig.containers !== "object") {
+    console.error("containerConfig.containers is not defined or is not an object");
+    return;
+  }
 
-	const components: Record<string, any> = {};
+  const components: Record<string, any> = {};
 
-	// Iterate through each container configuration
-	Object.entries(containerConfig.containers).forEach(([containerName, containerConfigItem]) => {
-		if (!containerConfigItem) return;
+  Object.entries(containerConfig.containers).forEach(([containerName, containerConfigItem]) => {
+    if (!containerConfigItem) return;
 
-		// Helper to convert camelCase to kebab-case
-		const toKebab = (str: string) =>
-			str.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase();
+    const toKebab = (str: string) =>
+      str.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase();
 
-		const containerClass = toKebab(containerName);
+    const containerClass = toKebab(containerName);
 
-		// Build the container base class
-		const baseStyles: Record<string, any> = {};
-		const responsiveStyles: Record<string, any> = {
-			"@screen sm": {},
-			"@screen md": {},
-			"@screen lg": {},
-			"@screen xl": {},
-			"@screen 2xl": {},
-		};
+    const baseStyles: Record<string, any> = {};
+    const responsiveStyles: Record<string, Record<string, any>> = {
+      [`@media (min-width: ${SCREENS.sm})`]:   {},
+      [`@media (min-width: ${SCREENS.md})`]:   {},
+      [`@media (min-width: ${SCREENS.lg})`]:   {},
+      [`@media (min-width: ${SCREENS.xl})`]:   {},
+      [`@media (min-width: ${SCREENS["2xl"]})`]: {},
+    };
 
-		// ========== DISPLAY ==========
-		if (containerConfigItem.display) {
-			baseStyles.display = containerConfigItem.display.default;
-			responsiveStyles["@screen sm"].display = containerConfigItem.display.sm;
-			responsiveStyles["@screen md"].display = containerConfigItem.display.md;
-			responsiveStyles["@screen lg"].display = containerConfigItem.display.lg;
-			responsiveStyles["@screen xl"].display = containerConfigItem.display.xl;
-			responsiveStyles["@screen 2xl"].display = containerConfigItem.display["2xl"];
-		}
+    const forScreen = (bp: ScreenKey) =>
+      responsiveStyles[`@media (min-width: ${SCREENS[bp]})`];
 
-		// ========== WIDTH ==========
-		if (containerConfigItem.width) {
-			baseStyles.width = containerConfigItem.width.default;
-			responsiveStyles["@screen sm"].width = containerConfigItem.width.sm;
-			responsiveStyles["@screen md"].width = containerConfigItem.width.md;
-			responsiveStyles["@screen lg"].width = containerConfigItem.width.lg;
-			responsiveStyles["@screen xl"].width = containerConfigItem.width.xl;
-			responsiveStyles["@screen 2xl"].width = containerConfigItem.width["2xl"];
-		}
+    // ── Display ──────────────────────────────────────────────────────────────
+    if (containerConfigItem.display) {
+      const d = containerConfigItem.display;
+      baseStyles.display = d.default;
+      forScreen("sm").display  = d.sm;
+      forScreen("md").display  = d.md;
+      forScreen("lg").display  = d.lg;
+      forScreen("xl").display  = d.xl;
+      forScreen("2xl").display = d["2xl"];
+    }
 
-		// ========== MAX WIDTH ==========
-		if (containerConfigItem.maxWidth) {
-			baseStyles.maxWidth = containerConfigItem.maxWidth.default;
-			responsiveStyles["@screen sm"].maxWidth = containerConfigItem.maxWidth.sm;
-			responsiveStyles["@screen md"].maxWidth = containerConfigItem.maxWidth.md;
-			responsiveStyles["@screen lg"].maxWidth = containerConfigItem.maxWidth.lg;
-			responsiveStyles["@screen xl"].maxWidth = containerConfigItem.maxWidth.xl;
-			responsiveStyles["@screen 2xl"].maxWidth = containerConfigItem.maxWidth["2xl"];
-		}
+    // ── Width ────────────────────────────────────────────────────────────────
+    if (containerConfigItem.width) {
+      const w = containerConfigItem.width;
+      baseStyles.width = w.default;
+      forScreen("sm").width  = w.sm;
+      forScreen("md").width  = w.md;
+      forScreen("lg").width  = w.lg;
+      forScreen("xl").width  = w.xl;
+      forScreen("2xl").width = w["2xl"];
+    }
 
-		// ========== COLUMNS (Grid Template Columns) ==========
-		if (containerConfigItem.columns) {
-			baseStyles.gridTemplateColumns = `repeat(${containerConfigItem.columns.default}, minmax(0, 1fr))`;
-			responsiveStyles["@screen sm"].gridTemplateColumns = `repeat(${containerConfigItem.columns.sm}, minmax(0, 1fr))`;
-			responsiveStyles["@screen md"].gridTemplateColumns = `repeat(${containerConfigItem.columns.md}, minmax(0, 1fr))`;
-			responsiveStyles["@screen lg"].gridTemplateColumns = `repeat(${containerConfigItem.columns.lg}, minmax(0, 1fr))`;
-			responsiveStyles["@screen xl"].gridTemplateColumns = `repeat(${containerConfigItem.columns.xl}, minmax(0, 1fr))`;
-			responsiveStyles["@screen 2xl"].gridTemplateColumns = `repeat(${containerConfigItem.columns["2xl"]}, minmax(0, 1fr))`;
-		}
+    // ── Max-width ────────────────────────────────────────────────────────────
+    if (containerConfigItem.maxWidth) {
+      const mw = containerConfigItem.maxWidth;
+      baseStyles.maxWidth = mw.default;
+      forScreen("sm").maxWidth  = mw.sm;
+      forScreen("md").maxWidth  = mw.md;
+      forScreen("lg").maxWidth  = mw.lg;
+      forScreen("xl").maxWidth  = mw.xl;
+      forScreen("2xl").maxWidth = mw["2xl"];
+    }
 
-		// ========== GAP ==========
-		if (containerConfigItem.gap) {
-			baseStyles.gap = containerConfigItem.gap.default;
-			responsiveStyles["@screen sm"].gap = containerConfigItem.gap.sm;
-			responsiveStyles["@screen md"].gap = containerConfigItem.gap.md;
-			responsiveStyles["@screen lg"].gap = containerConfigItem.gap.lg;
-			responsiveStyles["@screen xl"].gap = containerConfigItem.gap.xl;
-			responsiveStyles["@screen 2xl"].gap = containerConfigItem.gap["2xl"];
-		}
+    // ── Columns (grid-template-columns) ──────────────────────────────────────
+    if (containerConfigItem.columns) {
+      const c = containerConfigItem.columns;
+      baseStyles.gridTemplateColumns = `repeat(${c.default}, minmax(0, 1fr))`;
+      forScreen("sm").gridTemplateColumns  = `repeat(${c.sm}, minmax(0, 1fr))`;
+      forScreen("md").gridTemplateColumns  = `repeat(${c.md}, minmax(0, 1fr))`;
+      forScreen("lg").gridTemplateColumns  = `repeat(${c.lg}, minmax(0, 1fr))`;
+      forScreen("xl").gridTemplateColumns  = `repeat(${c.xl}, minmax(0, 1fr))`;
+      forScreen("2xl").gridTemplateColumns = `repeat(${c["2xl"]}, minmax(0, 1fr))`;
+    }
 
-		// ========== ROW GAP ==========
-		if (containerConfigItem.rowGap) {
-			baseStyles.rowGap = containerConfigItem.rowGap.default;
-			responsiveStyles["@screen sm"].rowGap = containerConfigItem.rowGap.sm;
-			responsiveStyles["@screen md"].rowGap = containerConfigItem.rowGap.md;
-			responsiveStyles["@screen lg"].rowGap = containerConfigItem.rowGap.lg;
-			responsiveStyles["@screen xl"].rowGap = containerConfigItem.rowGap.xl;
-			responsiveStyles["@screen 2xl"].rowGap = containerConfigItem.rowGap["2xl"];
-		}
+    // ── Gap ──────────────────────────────────────────────────────────────────
+    if (containerConfigItem.gap) {
+      const g = containerConfigItem.gap;
+      baseStyles.gap = g.default;
+      forScreen("sm").gap  = g.sm;
+      forScreen("md").gap  = g.md;
+      forScreen("lg").gap  = g.lg;
+      forScreen("xl").gap  = g.xl;
+      forScreen("2xl").gap = g["2xl"];
+    }
 
-		// ========== COLUMN GAP ==========
-		if (containerConfigItem.columnGap) {
-			baseStyles.columnGap = containerConfigItem.columnGap.default;
-			responsiveStyles["@screen sm"].columnGap = containerConfigItem.columnGap.sm;
-			responsiveStyles["@screen md"].columnGap = containerConfigItem.columnGap.md;
-			responsiveStyles["@screen lg"].columnGap = containerConfigItem.columnGap.lg;
-			responsiveStyles["@screen xl"].columnGap = containerConfigItem.columnGap.xl;
-			responsiveStyles["@screen 2xl"].columnGap = containerConfigItem.columnGap["2xl"];
-		}
+    // ── Row gap ──────────────────────────────────────────────────────────────
+    if (containerConfigItem.rowGap) {
+      const rg = containerConfigItem.rowGap;
+      baseStyles.rowGap = rg.default;
+      forScreen("sm").rowGap  = rg.sm;
+      forScreen("md").rowGap  = rg.md;
+      forScreen("lg").rowGap  = rg.lg;
+      forScreen("xl").rowGap  = rg.xl;
+      forScreen("2xl").rowGap = rg["2xl"];
+    }
 
-		// ========== PADDING ==========
-		if (containerConfigItem.padding) {
-			const { top, right, bottom, left } = containerConfigItem.padding;
+    // ── Column gap ───────────────────────────────────────────────────────────
+    if (containerConfigItem.columnGap) {
+      const cg = containerConfigItem.columnGap;
+      baseStyles.columnGap = cg.default;
+      forScreen("sm").columnGap  = cg.sm;
+      forScreen("md").columnGap  = cg.md;
+      forScreen("lg").columnGap  = cg.lg;
+      forScreen("xl").columnGap  = cg.xl;
+      forScreen("2xl").columnGap = cg["2xl"];
+    }
 
-			// Padding Top
-			if (top) {
-				baseStyles.paddingTop = top.default;
-				responsiveStyles["@screen sm"].paddingTop = top.sm;
-				responsiveStyles["@screen md"].paddingTop = top.md;
-				responsiveStyles["@screen lg"].paddingTop = top.lg;
-				responsiveStyles["@screen xl"].paddingTop = top.xl;
-				responsiveStyles["@screen 2xl"].paddingTop = top["2xl"];
-			}
+    // ── Padding ──────────────────────────────────────────────────────────────
+    if (containerConfigItem.padding) {
+      const { top, right, bottom, left } = containerConfigItem.padding;
 
-			// Padding Right
-			if (right) {
-				baseStyles.paddingRight = right.default;
-				responsiveStyles["@screen sm"].paddingRight = right.sm;
-				responsiveStyles["@screen md"].paddingRight = right.md;
-				responsiveStyles["@screen lg"].paddingRight = right.lg;
-				responsiveStyles["@screen xl"].paddingRight = right.xl;
-				responsiveStyles["@screen 2xl"].paddingRight = right["2xl"];
-			}
+      if (top) {
+        baseStyles.paddingTop = top.default;
+        forScreen("sm").paddingTop  = top.sm;
+        forScreen("md").paddingTop  = top.md;
+        forScreen("lg").paddingTop  = top.lg;
+        forScreen("xl").paddingTop  = top.xl;
+        forScreen("2xl").paddingTop = top["2xl"];
+      }
+      if (right) {
+        baseStyles.paddingRight = right.default;
+        forScreen("sm").paddingRight  = right.sm;
+        forScreen("md").paddingRight  = right.md;
+        forScreen("lg").paddingRight  = right.lg;
+        forScreen("xl").paddingRight  = right.xl;
+        forScreen("2xl").paddingRight = right["2xl"];
+      }
+      if (bottom) {
+        baseStyles.paddingBottom = bottom.default;
+        forScreen("sm").paddingBottom  = bottom.sm;
+        forScreen("md").paddingBottom  = bottom.md;
+        forScreen("lg").paddingBottom  = bottom.lg;
+        forScreen("xl").paddingBottom  = bottom.xl;
+        forScreen("2xl").paddingBottom = bottom["2xl"];
+      }
+      if (left) {
+        baseStyles.paddingLeft = left.default;
+        forScreen("sm").paddingLeft  = left.sm;
+        forScreen("md").paddingLeft  = left.md;
+        forScreen("lg").paddingLeft  = left.lg;
+        forScreen("xl").paddingLeft  = left.xl;
+        forScreen("2xl").paddingLeft = left["2xl"];
+      }
+    }
 
-			// Padding Bottom
-			if (bottom) {
-				baseStyles.paddingBottom = bottom.default;
-				responsiveStyles["@screen sm"].paddingBottom = bottom.sm;
-				responsiveStyles["@screen md"].paddingBottom = bottom.md;
-				responsiveStyles["@screen lg"].paddingBottom = bottom.lg;
-				responsiveStyles["@screen xl"].paddingBottom = bottom.xl;
-				responsiveStyles["@screen 2xl"].paddingBottom = bottom["2xl"];
-			}
+    // ── Margin ───────────────────────────────────────────────────────────────
+    if (containerConfigItem.margin) {
+      const { top, right, bottom, left } = containerConfigItem.margin;
 
-			// Padding Left
-			if (left) {
-				baseStyles.paddingLeft = left.default;
-				responsiveStyles["@screen sm"].paddingLeft = left.sm;
-				responsiveStyles["@screen md"].paddingLeft = left.md;
-				responsiveStyles["@screen lg"].paddingLeft = left.lg;
-				responsiveStyles["@screen xl"].paddingLeft = left.xl;
-				responsiveStyles["@screen 2xl"].paddingLeft = left["2xl"];
-			}
-		}
+      if (top) {
+        baseStyles.marginTop = top.default;
+        forScreen("sm").marginTop  = top.sm;
+        forScreen("md").marginTop  = top.md;
+        forScreen("lg").marginTop  = top.lg;
+        forScreen("xl").marginTop  = top.xl;
+        forScreen("2xl").marginTop = top["2xl"];
+      }
+      if (right) {
+        baseStyles.marginRight = right.default;
+        forScreen("sm").marginRight  = right.sm;
+        forScreen("md").marginRight  = right.md;
+        forScreen("lg").marginRight  = right.lg;
+        forScreen("xl").marginRight  = right.xl;
+        forScreen("2xl").marginRight = right["2xl"];
+      }
+      if (bottom) {
+        baseStyles.marginBottom = bottom.default;
+        forScreen("sm").marginBottom  = bottom.sm;
+        forScreen("md").marginBottom  = bottom.md;
+        forScreen("lg").marginBottom  = bottom.lg;
+        forScreen("xl").marginBottom  = bottom.xl;
+        forScreen("2xl").marginBottom = bottom["2xl"];
+      }
+      if (left) {
+        baseStyles.marginLeft = left.default;
+        forScreen("sm").marginLeft  = left.sm;
+        forScreen("md").marginLeft  = left.md;
+        forScreen("lg").marginLeft  = left.lg;
+        forScreen("xl").marginLeft  = left.xl;
+        forScreen("2xl").marginLeft = left["2xl"];
+      }
+    }
 
-		// ========== MARGIN ==========
-		if (containerConfigItem.margin) {
-			const { top, right, bottom, left } = containerConfigItem.margin;
+    components[`.${containerClass}`] = {
+      ...baseStyles,
+      ...responsiveStyles,
+    };
+  });
 
-			// Margin Top
-			if (top) {
-				baseStyles.marginTop = top.default;
-				responsiveStyles["@screen sm"].marginTop = top.sm;
-				responsiveStyles["@screen md"].marginTop = top.md;
-				responsiveStyles["@screen lg"].marginTop = top.lg;
-				responsiveStyles["@screen xl"].marginTop = top.xl;
-				responsiveStyles["@screen 2xl"].marginTop = top["2xl"];
-			}
-
-			// Margin Right
-			if (right) {
-				baseStyles.marginRight = right.default;
-				responsiveStyles["@screen sm"].marginRight = right.sm;
-				responsiveStyles["@screen md"].marginRight = right.md;
-				responsiveStyles["@screen lg"].marginRight = right.lg;
-				responsiveStyles["@screen xl"].marginRight = right.xl;
-				responsiveStyles["@screen 2xl"].marginRight = right["2xl"];
-			}
-
-			// Margin Bottom
-			if (bottom) {
-				baseStyles.marginBottom = bottom.default;
-				responsiveStyles["@screen sm"].marginBottom = bottom.sm;
-				responsiveStyles["@screen md"].marginBottom = bottom.md;
-				responsiveStyles["@screen lg"].marginBottom = bottom.lg;
-				responsiveStyles["@screen xl"].marginBottom = bottom.xl;
-				responsiveStyles["@screen 2xl"].marginBottom = bottom["2xl"];
-			}
-
-			// Margin Left
-			if (left) {
-				baseStyles.marginLeft = left.default;
-				responsiveStyles["@screen sm"].marginLeft = left.sm;
-				responsiveStyles["@screen md"].marginLeft = left.md;
-				responsiveStyles["@screen lg"].marginLeft = left.lg;
-				responsiveStyles["@screen xl"].marginLeft = left.xl;
-				responsiveStyles["@screen 2xl"].marginLeft = left["2xl"];
-			}
-		}
-
-		// Combine base styles with responsive styles
-		components[`.${containerClass}`] = {
-			...baseStyles,
-			...responsiveStyles,
-		};
-	});
-
-	addComponents(components);
+  addComponents(components);
 });

@@ -43,8 +43,15 @@ export default defineType({
     defineField({
       name: "internalLink",
       type: "reference",
-      title: "Internal Link",
+      title: "Internal Page",
       to: [{ type: "page" }],
+      hidden: ({ parent }) => parent?.isExternal,
+    }),
+    defineField({
+      name: "sectionAnchor",
+      title: "Section on Page",
+      type: "string",
+      description: 'Optional section ID — e.g. "book" for /contact#book. Do not include the #.',
       hidden: ({ parent }) => parent?.isExternal,
     }),
     defineField({

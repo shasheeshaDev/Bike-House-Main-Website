@@ -1,32 +1,31 @@
-import { Poppins, Plus_Jakarta_Sans, Cormorant_Garamond, DM_Sans } from "next/font/google";
+import { Anton, Barlow_Condensed, Manrope, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
 import { fetchSanitySettings } from "@/sanity/lib/fetch";
 
-const fontPoppins = Poppins({
+const fontAnton = Anton({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
-  variable: "--font-poppins",
+  weight: "400",
+  variable: "--font-anton",
 });
 
-const fontPlusJakartaSans = Plus_Jakarta_Sans({
+const fontBarlowCondensed = Barlow_Condensed({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
-  variable: "--font-plus-jakarta-sans",
+  variable: "--font-barlow-condensed",
 });
 
-const fontCormorant = Cormorant_Garamond({
+const fontManrope = Manrope({
   subsets: ["latin"],
-  weight: ["300", "400", "700"],
-  style: ["normal", "italic"],
-  variable: "--font-cormorant",
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-manrope",
 });
 
-const fontDMSans = DM_Sans({
+const fontJetBrainsMono = JetBrains_Mono({
   subsets: ["latin"],
-  weight: ["300", "400", "500"],
-  variable: "--font-dm-sans",
+  weight: ["400", "500"],
+  variable: "--font-jetbrains-mono",
 });
 
 export async function generateMetadata() {
@@ -49,11 +48,11 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body
         className={cn(
-          "min-h-screen bg-background font-dmSans antialiased overscroll-none",
-          fontPoppins.variable,
-          fontPlusJakartaSans.variable,
-          fontCormorant.variable,
-          fontDMSans.variable,
+          "min-h-screen antialiased overscroll-none",
+          fontAnton.variable,
+          fontBarlowCondensed.variable,
+          fontManrope.variable,
+          fontJetBrainsMono.variable,
         )}
       >
         {children}

@@ -1,5 +1,5 @@
 import Header from "@/components/header";
-import Footer2 from "@/components/footer/footer-2";
+import Footer from "@/components/footer/footer";
 import { DisableDraftMode } from "@/components/disable-draft-mode";
 import { VisualEditing } from "next-sanity/visual-editing";
 import { draftMode } from "next/headers";
@@ -21,7 +21,7 @@ export default async function MainLayout({
           <VisualEditing />
         </>
       )}
-      <Footer2 />
+      <Footer />
     </>
   );
 }

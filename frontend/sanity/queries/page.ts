@@ -1,4 +1,5 @@
 import { groq } from "next-sanity";
+import { pageHeroQuery } from "./page-hero/page-hero";
 import { metaQuery } from "./shared/meta";
 import { imageQuery } from "./shared/image";
 import { sectionHeaderQuery } from "./section-header";
@@ -54,6 +55,7 @@ export const PAGE_QUERY = groq`
     },
     isPrefooterCta,
     blocks[]{
+      ${pageHeroQuery},
       ${sectionHeaderQuery},
       ${content1Query},
       ${content2Query},

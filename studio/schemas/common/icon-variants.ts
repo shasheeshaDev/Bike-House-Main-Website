@@ -32,6 +32,7 @@ export const ICON_VARIANTS = [
   { title: "MessagesSquare", value: "messages-square" },
   { title: "MoveRight", value: "move-right" },
   { title: "None", value: "none" },
+  { title: "Phone", value: "phone" },
   { title: "Play", value: "play" },
   { title: "PlayCircle", value: "play-circle" },
   { title: "Redo", value: "redo" },

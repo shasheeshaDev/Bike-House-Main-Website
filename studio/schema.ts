@@ -60,6 +60,8 @@ import form1 from "./schemas/blocks/form/form1";
 import banner1 from "./schemas/blocks/banner/banner1";
 import banner2 from "./schemas/blocks/banner/banner2";
 import banner3 from "./schemas/blocks/banner/banner3";
+// Bike House blocks
+import pageHero from "./schemas/blocks/page-hero/page-hero";
 // Card
 import card1 from "./schemas/blocks/card/card1";
 import card2 from "./schemas/blocks/card/card2";
@@ -120,6 +122,8 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     columnBuilder,
     ...columnBuilderBlocks,
     // All Blocks - Start
+    // Bike House blocks
+    pageHero,
     // Banner
     banner1,
     banner2,

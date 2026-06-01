@@ -21,6 +21,7 @@ export default defineField({
               { title: "Instagram", value: "instagram" },
               { title: "LinkedIn", value: "linkedin" },
               { title: "YouTube", value: "youtube" },
+              { title: "WhatsApp", value: "whatsapp" },
               { title: "GitHub", value: "github" },
               { title: "Dribbble", value: "dribbble" },
               { title: "Globe (Other)", value: "globe" },

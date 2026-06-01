@@ -4,15 +4,15 @@ import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useSearchParams } from "next/navigation";
 
-import { useDraftModeEnvironment } from "next-sanity/hooks";
+import { useVisualEditingEnvironment } from "next-sanity/hooks";
 
 export function DisableDraftMode() {
-  const environment = useDraftModeEnvironment();
+  const environment = useVisualEditingEnvironment();
   const searchParams = useSearchParams();
   const isIframe = searchParams.get("iframe") === "true";
 
-  // Only show the disable draft mode button when outside of Presentation Tool
-  if (environment !== "live" && environment !== "unknown") {
+  // Don't show the button when inside the Presentation Tool
+  if (environment === "presentation-iframe" || environment === "presentation-window") {
     return null;
   }
 
