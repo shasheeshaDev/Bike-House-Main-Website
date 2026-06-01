@@ -1,0 +1,50 @@
+{
+  "name": "sanityblocks",
+  "version": "1.2.0",
+  "private": true,
+  "scripts": {
+    "dev": "sanity dev",
+    "start": "sanity start",
+    "build": "sanity build",
+    "deploy": "sanity deploy",
+    "typegen": "rm -rf schema.json && sanity schema extract && sanity typegen generate",
+    "typecheck": "tsc --noEmit",
+    "create-sample-page": "tsx scripts/create-sample-blocks-page.ts",
+    "add-sample-to-menu": "tsx scripts/add-sample-page-to-menu.ts",
+    "create-category-pages": "tsx scripts/create-category-pages.ts",
+    "add-showcase-menu": "tsx scripts/add-showcase-menu.ts",
+    "remove-all-samples": "tsx scripts/remove-all-sample-pages.ts"
+  },
+  "dependencies": {
+    "@sanity/code-input": "^6.0.1",
+    "@sanity/icons": "^3.7.4",
+    "@sanity/image-url": "^1.2.0",
+    "@sanity/orderable-document-list": "^1.4.0",
+    "@sanity/preview-url-secret": "^2.1.15",
+    "@sanity/ui": "^3.1.4",
+    "@sanity/vision": "^4.9.0",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.544.0",
+    "react": "19.1.1",
+    "react-dom": "19.1.1",
+    "react-player": "^3.3.3",
+    "sanity": "^4.9.0",
+    "sanity-plugin-iframe-pane": "^4.0.0",
+    "sanity-plugin-media": "^4.0.0",
+    "styled-components": "^6.1.19",
+    "tailwind-merge": "^3.3.1"
+  },
+  "devDependencies": {
+    "@sanity/client": "^7.11.2",
+    "@sanity/eslint-config-studio": "^5.0.2",
+    "@sanity/types": "^4.9.0",
+    "@types/node": "^24.5.2",
+    "@types/react": "^19.1.13",
+    "@types/react-dom": "^19.1.9",
+    "dotenv": "^17.2.2",
+    "eslint": "^9.36.0",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.2"
+  }
+}

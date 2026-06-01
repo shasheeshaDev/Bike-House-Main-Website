@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Services — Bike House</title>
+<meta name="description" content="Engine repairs, performance tuning, ECU diagnostics, suspension work, custom modifications and full-service motorcycle care.">
+<link rel="icon" href="assets/img/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@400;500;600;700&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body data-page="services">
+
+<section class="page-hero" data-screen-label="01 Services Hero">
+  <div class="container">
+    <div class="crumbs">Home <span>/</span> Services</div>
+    <h1>What we<br><span style="color:var(--red)">do best.</span></h1>
+    <p class="lead" style="margin-top:28px; max-width:62ch;">
+      Eight service lines, one philosophy: diagnose properly, fix permanently, document everything. From routine oil changes to complete engine rebuilds, every job leaves our workshop signed-off by the technician who did it.
+    </p>
+  </div>
+</section>
+
+<!-- SERVICES GRID -->
+<section class="section">
+  <div class="container">
+    <div class="services-grid" id="allServices"></div>
+  </div>
+</section>
+
+<!-- DETAIL: each service expanded -->
+<section class="section" style="background:var(--bg-soft)" id="engine">
+  <div class="container">
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center;" class="srv-detail">
+      <div>
+        <span class="kicker">01 / Engine Repairs</span>
+        <h2 class="h2" style="margin-top:14px">Top-end. Bottom-end.<br>Everything in between.</h2>
+        <p style="margin-top:24px;">We rebuild four-stroke engines from inline-4 superbikes to V-twin nakeds. Cylinder honing, valve work, piston replacement, full bottom-end overhauls. Every rebuild gets a leak-down test before assembly and a dyno-validated run-in.</p>
+        <ul style="list-style:none; padding:0; margin:24px 0 0; display:grid; gap:10px;">
+          <li class="spec-line">▸ Cylinder head rebuilds &amp; valve seating</li>
+          <li class="spec-line">▸ Crankshaft &amp; conrod replacement</li>
+          <li class="spec-line">▸ Piston &amp; ring replacement</li>
+          <li class="spec-line">▸ Gasket &amp; seal replacement</li>
+        </ul>
+        <div style="margin-top:32px"><a class="btn btn-ghost" href="contact.html#book">Quote My Engine <span class="arrow"></span></a></div>
+      </div>
+      <div style="aspect-ratio:1/1; background-image:url('assets/img/diagnostic-work.jpg'); background-size:cover; background-position:center; border:1px solid var(--line);"></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="tuning">
+  <div class="container">
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center;" class="srv-detail rev">
+      <div style="aspect-ratio:1/1; background-image:url('assets/img/cbr1000rr-front.jpg'); background-size:cover; background-position:center; border:1px solid var(--line);"></div>
+      <div>
+        <span class="kicker">02 / Performance Tuning</span>
+        <h2 class="h2" style="margin-top:14px">Dyno-mapped<br>or it didn't happen.</h2>
+        <p style="margin-top:24px;">Real tuning is data-driven. We run before-and-after dyno pulls on every map. Custom fuel/ignition tables for full systems, ECU flashes for OEM-friendly upgrades, and intake/exhaust pairings that actually work together.</p>
+        <ul style="list-style:none; padding:0; margin:24px 0 0; display:grid; gap:10px;">
+          <li class="spec-line">▸ Custom fuel &amp; ignition mapping</li>
+          <li class="spec-line">▸ Power Commander &amp; Rapid Bike installs</li>
+          <li class="spec-line">▸ Full-system exhaust development</li>
+          <li class="spec-line">▸ Air filter &amp; intake matching</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background:var(--bg-soft)" id="diagnostics">
+  <div class="container">
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center;" class="srv-detail">
+      <div>
+        <span class="kicker">03 / ECU Diagnostics</span>
+        <h2 class="h2" style="margin-top:14px">Read the ECU<br>like a doctor.</h2>
+        <p style="margin-top:24px;">OEM-grade scan tools for BMW (Motoscan), Ducati (DDS), Yamaha (YDT), KTM (KTMScan), Honda (HDS) and Kawasaki. Live data, fault history, throttle adaptation resets, immobiliser pairing — work most workshops can't do.</p>
+        <ul style="list-style:none; padding:0; margin:24px 0 0; display:grid; gap:10px;">
+          <li class="spec-line">▸ Live data &amp; fault code reading</li>
+          <li class="spec-line">▸ Throttle adaptation &amp; idle reset</li>
+          <li class="spec-line">▸ ABS &amp; traction calibration</li>
+          <li class="spec-line">▸ Immobiliser &amp; key programming</li>
+        </ul>
+      </div>
+      <div style="aspect-ratio:1/1; background:linear-gradient(180deg,#1c1d21,#0a0a0b); border:1px solid var(--line); display:grid; place-items:center; padding:32px;">
+        <pre style="font-family:var(--font-mono); font-size:13px; color:var(--red); line-height:1.7; margin:0;">
+&gt; CONNECT BMW_S1000RR
+ECU_VER: 0224a3 ✓
+RPM: 1240 / TPS: 4.2%
+COOLANT: 87°C
+LAMBDA_FR: 0.99
+LAMBDA_RR: 1.01
+DTC: ────────
+P0420 · CAT BANK 1 LOW
+P1455 · EVAP VENT
+&gt; CLEAR_DTC ✓
+&gt; SAVE_LOG /bh/24-11-18</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="label">[ How We Work ]</div>
+        <h2 class="h2">A bike comes in.<br>This is what happens.</h2>
+      </div>
+    </div>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:24px;">
+      <div class="card" style="padding:32px;"><div style="font-family:var(--font-display); font-size:64px; color:var(--red); line-height:1;">01</div><h4 class="h4" style="margin-top:14px">Drop-Off &amp; Brief</h4><p style="font-size:13px; margin-top:10px;">You describe symptoms. We ask questions. No assumptions.</p></div>
+      <div class="card" style="padding:32px;"><div style="font-family:var(--font-display); font-size:64px; color:var(--red); line-height:1;">02</div><h4 class="h4" style="margin-top:14px">Diagnose</h4><p style="font-size:13px; margin-top:10px;">ECU scan, visual inspection, test ride. We confirm before we touch anything.</p></div>
+      <div class="card" style="padding:32px;"><div style="font-family:var(--font-display); font-size:64px; color:var(--red); line-height:1;">03</div><h4 class="h4" style="margin-top:14px">Itemised Quote</h4><p style="font-size:13px; margin-top:10px;">Labour, parts, lead time. You approve before work starts.</p></div>
+      <div class="card" style="padding:32px;"><div style="font-family:var(--font-display); font-size:64px; color:var(--red); line-height:1;">04</div><h4 class="h4" style="margin-top:14px">Repair &amp; Test</h4><p style="font-size:13px; margin-top:10px;">Work + test ride + final inspection. Photos at major stages.</p></div>
+      <div class="card" style="padding:32px;"><div style="font-family:var(--font-display); font-size:64px; color:var(--red); line-height:1;">05</div><h4 class="h4" style="margin-top:14px">Handover</h4><p style="font-size:13px; margin-top:10px;">Walkthrough of what we did. 30-day workmanship guarantee on every job.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section">
+  <div class="container">
+    <div class="cta-banner">
+      <div>
+        <span class="kicker">Ready to book?</span>
+        <h3 style="margin-top:16px">Slot your bike in<br>this week.</h3>
+      </div>
+      <div class="ctas">
+        <a class="btn" href="contact.html#book">Book a Service <span class="arrow"></span></a>
+        <a class="btn btn-ghost" href="https://wa.me/94771234567">WhatsApp Us <span class="arrow"></span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/site.js"></script>
+<script>
+  const D = window.BH_DATA;
+  document.getElementById("allServices").innerHTML = D.services.map(s => `
+    <a class="service-card" href="#${s.id}">
+      <div class="num">${s.num}</div>
+      <div class="ico">${s.icon}</div>
+      <h3>${s.title}</h3>
+      <p>${s.desc}</p>
+      <span class="more">Details</span>
+    </a>
+  `).join("");
+</script>
+
+<style>
+  @media (max-width: 900px) {
+    .srv-detail { grid-template-columns: 1fr !important; gap: 32px !important; }
+    .srv-detail.rev > div:first-child { order: 2; }
+  }
+</style>
+</body>
+</html>

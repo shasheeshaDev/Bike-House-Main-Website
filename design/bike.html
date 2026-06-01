@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bike Details — Bike House</title>
+<meta name="description" content="Full motorcycle details, photos, specifications and inquiry options.">
+<link rel="icon" href="assets/img/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@400;500;600;700&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/main.css">
+<style>
+  .bd-hero {
+    padding-top: 120px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .bd-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 48px;
+  }
+  @media (max-width: 1000px) { .bd-grid { grid-template-columns: 1fr; gap: 32px; } }
+  .bd-gallery { display: flex; flex-direction: column; gap: 12px; }
+  .bd-main-img {
+    aspect-ratio: 4 / 3;
+    background-size: cover;
+    background-position: center;
+    border: 1px solid var(--line);
+    position: relative;
+    transition: opacity .3s ease;
+  }
+  .bd-thumbs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .bd-thumb {
+    aspect-ratio: 4 / 3;
+    background-size: cover;
+    background-position: center;
+    border: 1px solid var(--line-soft);
+    cursor: pointer;
+    transition: border-color .25s, transform .25s;
+    opacity: .6;
+  }
+  .bd-thumb:hover { border-color: var(--line); opacity: .9; }
+  .bd-thumb.active { border-color: var(--red); opacity: 1; }
+
+  .bd-side > .spec-line { color: var(--red); }
+  .bd-title { font-size: clamp(40px, 5vw, 64px); line-height: .95; letter-spacing: .01em; }
+  .bd-price {
+    font-family: var(--font-display);
+    font-size: clamp(36px, 4vw, 48px);
+    line-height: 1;
+    margin-top: 20px;
+  }
+  .bd-price small { font-family: var(--font-mono); font-size: 12px; color: var(--ink-mute); letter-spacing: .2em; }
+  .bd-status {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    margin-top: 16px;
+    padding: 8px 12px;
+    border: 1px solid;
+  }
+  .bd-status.reg { color: #5dd07a; border-color: rgba(93, 208, 122, .4); }
+  .bd-status.unreg { color: #ffb547; border-color: rgba(255, 181, 71, .4); }
+  .bd-specs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--line-soft);
+    border: 1px solid var(--line-soft);
+    margin-top: 32px;
+  }
+  .bd-specs > div { background: var(--bg-elev); padding: 16px 18px; }
+  .bd-specs .l { font-family: var(--font-mono); font-size: 10px; letter-spacing: .22em; color: var(--ink-mute); text-transform: uppercase; }
+  .bd-specs .v { font-family: var(--font-display); font-size: 22px; margin-top: 8px; line-height: 1; }
+  .bd-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 32px; }
+  .bd-features {
+    list-style: none;
+    padding: 0;
+    margin: 16px 0 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .bd-features li {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: .08em;
+    color: var(--ink-dim);
+    padding-left: 14px;
+    position: relative;
+    text-transform: uppercase;
+  }
+  .bd-features li::before {
+    content: "▸";
+    color: var(--red);
+    position: absolute;
+    left: 0;
+  }
+  @media (max-width: 540px) { .bd-features { grid-template-columns: 1fr; } }
+
+  .bd-error {
+    padding: 100px 20px;
+    text-align: center;
+  }
+  .bd-error h1 { font-size: 80px; color: var(--ink-mute); }
+</style>
+</head>
+<body data-page="bikes">
+
+<section class="bd-hero">
+  <div class="container" style="padding-top: 60px; padding-bottom: 60px;">
+    <div class="crumbs">Home <span>/</span> <a href="bikes.html">Bikes</a> <span>/</span> <span id="crumbModel">…</span></div>
+    <div id="bikeBody"></div>
+  </div>
+</section>
+
+<!-- DESCRIPTION + RELATED -->
+<section class="section" id="moreSection">
+  <div class="container">
+    <div style="display:grid; grid-template-columns:1.4fr 1fr; gap:64px;" class="bd-more">
+      <div>
+        <span class="kicker">About this bike</span>
+        <h2 class="h2" style="margin-top:14px" id="aboutTitle">Story</h2>
+        <p style="margin-top:24px; max-width:60ch;" id="aboutBody">…</p>
+        <hr class="hr" style="margin:40px 0;">
+        <div style="font-family:var(--font-display); font-size:24px; text-transform:uppercase;">What's included</div>
+        <p style="font-size:14px; margin-top:14px;">Every bike on our floor comes with a documented service inspection, a 7-day return window for any undisclosed mechanical issue, and a complimentary first oil change after delivery.</p>
+      </div>
+      <aside>
+        <div style="padding:28px; border:1px solid var(--line); background:var(--bg-elev);">
+          <span class="kicker">Inquire about this bike</span>
+          <h3 class="h3" style="margin-top:12px; font-size:32px;">Talk to us<br>directly.</h3>
+          <p style="font-size:14px; margin-top:16px;">No bots, no forms-that-go-nowhere. Call or WhatsApp and one of the brothers will pick up.</p>
+          <div style="display:flex; flex-direction:column; gap:10px; margin-top:24px;">
+            <a class="btn" href="tel:+94771234567">Call Now <span class="arrow"></span></a>
+            <a class="btn btn-ghost" href="https://wa.me/94771234567">WhatsApp <span class="arrow"></span></a>
+            <a class="btn btn-ghost" href="contact.html#book">Send Inquiry <span class="arrow"></span></a>
+          </div>
+          <div style="margin-top:24px; padding-top:20px; border-top:1px solid var(--line-soft); font-family:var(--font-mono); font-size:11px; color:var(--ink-mute); letter-spacing:.15em; text-transform:uppercase;">
+            Mon–Sat · 08:30–19:00<br>
+            No. 42, Horana Road, Piliyandala
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- RELATED -->
+<section class="section" style="background:var(--bg-soft)">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="label">[ Similar Bikes ]</div>
+        <h2 class="h2">You might also<br>like these.</h2>
+      </div>
+      <div class="meta"><a href="bikes.html" style="color:var(--ink)">View All →</a></div>
+    </div>
+    <div class="bike-grid" id="relatedGrid"></div>
+  </div>
+</section>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/site.js"></script>
+<script>
+  const D = window.BH_DATA;
+  const params = new URLSearchParams(location.search);
+  const id = params.get("id");
+  const bike = D.bikes.find(b => b.id === id);
+  const fmtLKR = (n) => "LKR " + n.toLocaleString("en-LK");
+
+  const body = document.getElementById("bikeBody");
+  if (!bike) {
+    body.innerHTML = `
+      <div class="bd-error">
+        <h1>404</h1>
+        <p>That bike isn't on our floor. <a href="bikes.html" style="color:var(--red); border-bottom:1px solid var(--red);">See all bikes</a></p>
+      </div>
+    `;
+    document.getElementById("moreSection").style.display = "none";
+  } else {
+    document.title = `${bike.brand} ${bike.model} — Bike House`;
+    document.getElementById("crumbModel").textContent = bike.model;
+
+    body.innerHTML = `
+      <div class="bd-grid">
+        <div class="bd-gallery">
+          <div class="bd-main-img" id="mainImg" style="background-image:url('${bike.gallery[0] || bike.img}')">
+            ${bike.badge ? `<span class="badge" style="position:absolute; top:18px; left:18px; background:var(--red); color:#fff; font-family:var(--font-mono); font-size:10px; padding:6px 10px; letter-spacing:.18em; text-transform:uppercase;">${bike.badge}</span>` : ""}
+          </div>
+          <div class="bd-thumbs">
+            ${bike.gallery.map((src, i) => `
+              <div class="bd-thumb ${i === 0 ? 'active' : ''}" data-src="${src}" style="background-image:url('${src}')"></div>
+            `).join("")}
+          </div>
+        </div>
+
+        <div class="bd-side">
+          <div class="spec-line">${bike.brand} · ${bike.type}</div>
+          <h1 class="bd-title" style="margin-top:10px;">${bike.model}<br><span style="color:var(--ink-mute); font-size:.7em;">${bike.year}</span></h1>
+
+          <div class="bd-price">${fmtLKR(bike.price)} <small>LKR</small></div>
+
+          <div class="bd-status ${bike.registered ? 'reg' : 'unreg'}">
+            ${bike.registered ? '● Registered · ' + bike.reg : '○ Unregistered — buyer to register'}
+          </div>
+
+          <div class="bd-specs">
+            <div><div class="l">Engine</div><div class="v">${bike.cc} cc</div></div>
+            <div><div class="l">Mileage</div><div class="v">${bike.mileage.toLocaleString()} km</div></div>
+            <div><div class="l">Power</div><div class="v" style="font-size:18px;">${bike.power}</div></div>
+            <div><div class="l">Torque</div><div class="v" style="font-size:18px;">${bike.torque}</div></div>
+            <div><div class="l">Weight</div><div class="v">${bike.weight}</div></div>
+            <div><div class="l">Transmission</div><div class="v" style="font-size:16px;">${bike.transmission}</div></div>
+            <div style="grid-column:1/-1;"><div class="l">Colour</div><div class="v" style="font-size:18px;">${bike.color}</div></div>
+          </div>
+
+          <div class="bd-actions">
+            <a class="btn" href="tel:+94771234567">Call to Inquire <span class="arrow"></span></a>
+            <a class="btn btn-ghost" href="https://wa.me/94771234567">WhatsApp</a>
+            <button class="btn btn-ghost" onclick="window.scrollTo({top: document.getElementById('moreSection').getBoundingClientRect().top + window.scrollY - 80, behavior:'smooth'});" style="background:transparent;">Description ↓</button>
+          </div>
+        </div>
+      </div>
+    `;
+
+    // Gallery interactivity
+    document.querySelectorAll(".bd-thumb").forEach(t => {
+      t.addEventListener("click", () => {
+        document.querySelectorAll(".bd-thumb").forEach(x => x.classList.remove("active"));
+        t.classList.add("active");
+        const main = document.getElementById("mainImg");
+        main.style.opacity = "0";
+        setTimeout(() => {
+          main.style.backgroundImage = `url('${t.dataset.src}')`;
+          main.style.opacity = "1";
+        }, 150);
+      });
+    });
+
+    // About section
+    document.getElementById("aboutTitle").innerHTML = bike.model + ".";
+    document.getElementById("aboutBody").innerHTML = `
+      ${bike.desc}
+      <ul class="bd-features" style="margin-top:28px;">
+        ${bike.features.map(f => `<li>${f}</li>`).join("")}
+      </ul>
+    `;
+
+    // Related
+    const related = D.bikes.filter(x => x.id !== id).slice(0, 3);
+    document.getElementById("relatedGrid").innerHTML = related.map(b => `
+      <a class="bike-card" href="bike.html?id=${b.id}">
+        <div class="img" style="background-image:url('${b.img}'); position:relative;">
+          ${b.badge ? `<span class="badge">${b.badge}</span>` : ""}
+          <span class="reg-badge ${b.registered ? '' : 'unreg'}">${b.registered ? '● Registered' : '○ Unregistered'}</span>
+        </div>
+        <div class="info">
+          <div class="brand">${b.brand} · ${b.type}</div>
+          <h3>${b.model}</h3>
+          <div class="specs">
+            <span><strong>${b.cc} cc</strong><small>Engine</small></span>
+            <span><strong>${b.year}</strong><small>Year</small></span>
+            <span><strong>${(b.mileage/1000).toFixed(1)}K</strong><small>Km</small></span>
+          </div>
+          <div class="foot">
+            <div class="price">${fmtLKR(b.price)} <small>LKR</small></div>
+            <span class="btn btn-line">View Details</span>
+          </div>
+        </div>
+      </a>
+    `).join("");
+  }
+</script>
+
+<style>
+  @media (max-width: 900px) { .bd-more { grid-template-columns: 1fr !important; } }
+</style>
+</body>
+</html>

@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Shop — Bike House</title>
+<meta name="description" content="Premium motorcycle parts, helmets, tires, suspension, exhausts and gear. All purchases via phone inquiry.">
+<link rel="icon" href="assets/img/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@400;500;600;700&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body data-page="shop">
+
+<section class="page-hero" data-screen-label="01 Shop Hero">
+  <div class="container">
+    <div class="crumbs">Home <span>/</span> Shop</div>
+    <h1>Parts &amp;<br><span style="color:var(--red)">gear.</span></h1>
+    <p class="lead" style="margin-top:28px; max-width:62ch;">
+      Premium parts for premium machines. Brembo, Öhlins, Akrapovič, Pirelli, Arai, Alpinestars, Motul — direct supply, no grey-market.
+    </p>
+    <div style="margin-top:32px; padding:18px 22px; border:1px solid rgba(225,6,0,.4); background:rgba(225,6,0,.06); display:inline-flex; align-items:center; gap:14px; max-width:100%;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z"/></svg>
+      <div>
+        <div class="spec-line" style="color:var(--red);">PHONE-INQUIRY ONLY</div>
+        <div style="font-family:var(--font-display); font-size:22px; margin-top:4px;">Call <a href="tel:+94771234567" style="color:var(--ink)">+94 77 123 4567</a> to order</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-tight">
+  <div class="container">
+
+    <!-- SEARCH + SORT BAR -->
+    <div class="shop-search-bar">
+      <div class="shop-search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input type="search" id="searchInput" placeholder="Search parts, brands, SKU…" autocomplete="off">
+        <button class="search-clear" id="searchClear" aria-label="Clear search" style="display:none;">×</button>
+      </div>
+      <select id="sortSel" class="shop-sort">
+        <option value="featured">Featured</option>
+        <option value="low">Price ↑</option>
+        <option value="high">Price ↓</option>
+        <option value="az">Name A → Z</option>
+      </select>
+    </div>
+
+    <!-- CATEGORY FILTER -->
+    <div style="display:flex; flex-wrap:wrap; gap:10px; margin-bottom:24px; align-items:center;">
+      <span class="spec-line" style="margin-right:8px;">Category:</span>
+      <button class="chip cat-chip active" data-cat="">All</button>
+      <button class="chip cat-chip" data-cat="Helmets">Helmets</button>
+      <button class="chip cat-chip" data-cat="Tires">Tires</button>
+      <button class="chip cat-chip" data-cat="Suspension">Suspension</button>
+      <button class="chip cat-chip" data-cat="Exhausts">Exhausts</button>
+      <button class="chip cat-chip" data-cat="Oils">Oils</button>
+      <button class="chip cat-chip" data-cat="Brakes">Brakes</button>
+      <button class="chip cat-chip" data-cat="Gear">Gear</button>
+      <button class="chip cat-chip" data-cat="Chains">Chains</button>
+    </div>
+
+    <!-- IN-STOCK TOGGLE -->
+    <div style="display:flex; gap:24px; align-items:center; padding:14px 18px; background:var(--bg-elev); border:1px solid var(--line-soft); margin-bottom:32px; flex-wrap:wrap;">
+      <label style="display:inline-flex; gap:10px; align-items:center; cursor:pointer; font-family:var(--font-condensed); font-size:13px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-dim);">
+        <input type="checkbox" id="inStockOnly" style="accent-color: var(--red); width:16px; height:16px;">
+        In Stock Only
+      </label>
+      <div style="flex:1"></div>
+      <div class="filter-result"><strong id="shopCount">0</strong> products</div>
+    </div>
+
+    <div class="shop-grid" id="shopGrid"></div>
+    <div id="shopEmpty" style="display:none; padding:80px 20px; text-align:center; border:1px dashed var(--line); margin-top:24px;">
+      <div style="font-family:var(--font-display); font-size:48px; color:var(--ink-mute);">No matches.</div>
+      <p style="margin-top:14px;">Try a different search, or call us — we can source most things.</p>
+    </div>
+  </div>
+</section>
+
+<!-- BRAND BAR -->
+<section class="section-tight" style="background:var(--bg-soft); border-block:1px solid var(--line-soft);">
+  <div class="container">
+    <div class="spec-line" style="text-align:center; margin-bottom:32px;">Authorised supplier of</div>
+    <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:48px 64px; align-items:center; font-family:var(--font-display); font-size:clamp(22px, 2.5vw, 36px); color:var(--ink-mute); letter-spacing:.04em;">
+      <span>BREMBO</span><span>ÖHLINS</span><span>AKRAPOVIČ</span><span>PIRELLI</span><span>MICHELIN</span><span>ARAI</span><span>ALPINESTARS</span><span>MOTUL</span><span>DID</span><span>K&amp;N</span>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="cta-banner">
+      <div>
+        <span class="kicker">Need something specific?</span>
+        <h3 style="margin-top:16px">If we don't have it,<br>we can source it.</h3>
+        <p style="margin-top:20px; max-width:48ch;">Custom orders welcome. OEM part numbers, performance brands, special-order helmets and suits. Lead time is usually 2–4 weeks.</p>
+      </div>
+      <div class="ctas">
+        <a class="btn" href="tel:+94771234567">Call to Order <span class="arrow"></span></a>
+        <a class="btn btn-ghost" href="https://wa.me/94771234567">WhatsApp <span class="arrow"></span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/site.js"></script>
+<script>
+  const D = window.BH_DATA;
+  const fmtLKR = (n) => n.toLocaleString("en-LK");
+
+  const ICONS = {
+    helmet: `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M12 38c0-12 9-22 20-22s20 10 20 22v8H12v-8Z"/><path d="M20 38h32M28 24v8M44 24v8"/></svg>`,
+    tire: `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="32" cy="32" r="24"/><circle cx="32" cy="32" r="14"/><path d="M32 8v8M32 48v8M8 32h8M48 32h8"/></svg>`,
+    shock: `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="26" y="8" width="12" height="48" rx="2"/><path d="M22 16h20M22 24h20M22 32h20M22 40h20M22 48h20"/></svg>`,
+    exhaust: `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M8 32h36l12-8v16l-12-8"/><circle cx="50" cy="32" r="4"/></svg>`,
+    oil: `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M32 8c-8 14-14 22-14 30a14 14 0 0 0 28 0c0-8-6-16-14-30Z"/></svg>`,
+    disc: `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="32" cy="32" r="24"/><circle cx="32" cy="32" r="8"/><path d="M32 8v12M32 44v12M8 32h12M44 32h12"/></svg>`,
+    suit: `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M22 12h20l4 12-6 4v28H24V28l-6-4 4-12Z"/></svg>`,
+    chain: `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="10" y="26" width="14" height="12" rx="2"/><rect x="26" y="26" width="14" height="12" rx="2"/><rect x="42" y="26" width="14" height="12" rx="2"/></svg>`,
+  };
+
+  let activeCat = "";
+  let searchTerm = "";
+  let sortBy = "featured";
+  let inStockOnly = false;
+
+  function render() {
+    let list = D.products.slice();
+    if (activeCat) list = list.filter(p => p.cat === activeCat);
+    if (inStockOnly) list = list.filter(p => p.inStock);
+    if (searchTerm) {
+      const q = searchTerm.toLowerCase();
+      list = list.filter(p =>
+        p.title.toLowerCase().includes(q) ||
+        p.cat.toLowerCase().includes(q) ||
+        (p.brand || "").toLowerCase().includes(q) ||
+        (p.sku || "").toLowerCase().includes(q) ||
+        p.desc.toLowerCase().includes(q)
+      );
+    }
+    if (sortBy === "low") list.sort((a,b) => a.price - b.price);
+    else if (sortBy === "high") list.sort((a,b) => b.price - a.price);
+    else if (sortBy === "az") list.sort((a,b) => a.title.localeCompare(b.title));
+
+    document.getElementById("shopCount").textContent = list.length.toString().padStart(2, "0");
+    document.getElementById("shopGrid").innerHTML = list.map(p => `
+      <a class="product-card" href="product.html?id=${p.id}">
+        <div class="img">
+          ${ICONS[p.icon] || ICONS.tire}
+          <span class="tag">${p.tag}</span>
+          ${!p.inStock ? `<span style="position:absolute; left:10px; top:10px; background:var(--bg); color:#ffb547; font-family:var(--font-mono); font-size:9px; letter-spacing:.15em; padding:4px 8px; border:1px solid rgba(255,181,71,.4); text-transform:uppercase;">Special Order</span>` : ''}
+        </div>
+        <div class="info">
+          <div class="cat">${p.cat} · ${p.brand || ''}</div>
+          <h4>${p.title}</h4>
+          <p class="desc">${p.desc}</p>
+          <div class="foot">
+            <div class="price">${fmtLKR(p.price)}<small> LKR</small></div>
+            <span class="call-btn">Details →</span>
+          </div>
+        </div>
+      </a>
+    `).join("");
+    document.getElementById("shopEmpty").style.display = list.length === 0 ? "block" : "none";
+  }
+
+  document.querySelectorAll(".cat-chip").forEach(chip => {
+    chip.addEventListener("click", () => {
+      document.querySelectorAll(".cat-chip").forEach(c => c.classList.remove("active"));
+      chip.classList.add("active");
+      activeCat = chip.dataset.cat;
+      render();
+    });
+  });
+
+  const searchInput = document.getElementById("searchInput");
+  const searchClear = document.getElementById("searchClear");
+  searchInput.addEventListener("input", () => {
+    searchTerm = searchInput.value.trim();
+    searchClear.style.display = searchTerm ? "inline-flex" : "none";
+    render();
+  });
+  searchClear.addEventListener("click", () => {
+    searchInput.value = "";
+    searchTerm = "";
+    searchClear.style.display = "none";
+    render();
+    searchInput.focus();
+  });
+
+  document.getElementById("sortSel").addEventListener("change", (e) => {
+    sortBy = e.target.value;
+    render();
+  });
+  document.getElementById("inStockOnly").addEventListener("change", (e) => {
+    inStockOnly = e.target.checked;
+    render();
+  });
+
+  render();
+</script>
+
+<style>
+  .cat-chip {
+    cursor: pointer;
+    transition: all .25s;
+    background: var(--bg-soft);
+    color: var(--ink-dim);
+    font-family: var(--font-mono);
+  }
+  .cat-chip:hover { color: var(--ink); border-color: var(--line); }
+  .cat-chip.active {
+    background: var(--red);
+    color: #fff;
+    border-color: var(--red);
+  }
+  .shop-search-bar {
+    display: flex; gap: 12px; margin-bottom: 24px; align-items: stretch;
+  }
+  .shop-search {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 18px;
+    border: 1px solid var(--line);
+    background: var(--bg-elev);
+    color: var(--ink-mute);
+    transition: border-color .2s;
+  }
+  .shop-search:focus-within { border-color: var(--red); color: var(--ink); }
+  .shop-search input {
+    flex: 1;
+    background: transparent;
+    border: 0;
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 15px;
+    padding: 18px 0;
+    outline: none;
+  }
+  .shop-search input::placeholder { color: var(--ink-mute); }
+  .search-clear {
+    background: transparent;
+    color: var(--ink-mute);
+    border: 0;
+    font-size: 20px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    transition: background .2s, color .2s;
+  }
+  .search-clear:hover { background: var(--line); color: var(--ink); }
+  .shop-sort {
+    background: var(--bg-elev);
+    color: var(--ink);
+    border: 1px solid var(--line);
+    padding: 0 36px 0 16px;
+    font-family: var(--font-condensed);
+    font-size: 14px;
+    letter-spacing: .1em;
+    outline: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path fill='%23999' d='M0 0l5 6 5-6z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    cursor: pointer;
+    min-width: 160px;
+  }
+  @media (max-width: 600px) { .shop-search-bar { flex-direction: column; } }
+
+  .product-card { text-decoration: none; }
+  .product-card h4 { color: var(--ink); transition: color .2s; }
+  .product-card:hover h4 { color: var(--red); }
+</style>
+</body>
+</html>

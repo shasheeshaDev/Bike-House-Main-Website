@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bikes for Sale — Bike House</title>
+<meta name="description" content="Hand-picked premium motorcycles for sale. Superbikes, supermotos, and touring bikes — each inspected and serviced by our workshop.">
+<link rel="icon" href="assets/img/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@400;500;600;700&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body data-page="bikes">
+
+<section class="page-hero" data-screen-label="01 Bikes Hero">
+  <div class="container">
+    <div class="crumbs">Home <span>/</span> Bikes for Sale</div>
+    <h1>Bikes on the<br><span style="color:var(--red)">floor.</span></h1>
+    <p class="lead" style="margin-top:28px; max-width:62ch;">
+      Every bike on this page has been through our workshop. Inspected, serviced, documented. No surprises after handover.
+    </p>
+  </div>
+</section>
+
+<section class="section-tight">
+  <div class="container">
+
+    <!-- FILTER BAR -->
+    <form class="filters" id="filters" onsubmit="return false;">
+      <div class="filter-group">
+        <label>Brand</label>
+        <select name="brand" id="fBrand">
+          <option value="">All Brands</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>Engine (cc)</label>
+        <select name="cc" id="fCc">
+          <option value="">Any Capacity</option>
+          <option value="0-300">Up to 300cc</option>
+          <option value="300-700">300 – 700cc</option>
+          <option value="700-1000">700 – 1000cc</option>
+          <option value="1000-9999">1000cc+</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>Type</label>
+        <select name="type" id="fType">
+          <option value="">All Types</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>Max Price (LKR)</label>
+        <select name="price" id="fPrice">
+          <option value="">No Limit</option>
+          <option value="2000000">Up to 2M</option>
+          <option value="5000000">Up to 5M</option>
+          <option value="8000000">Up to 8M</option>
+          <option value="15000000">Up to 15M</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>Registration</label>
+        <select name="reg" id="fReg">
+          <option value="">All</option>
+          <option value="yes">Registered</option>
+          <option value="no">Unregistered</option>
+        </select>
+      </div>
+      <button class="btn btn-small" id="fReset" type="reset" style="background:transparent; border:1px solid var(--line); color:var(--ink-dim);">Reset</button>
+    </form>
+
+    <div style="display:flex; justify-content:space-between; align-items:center; margin:0 0 24px;">
+      <div class="filter-result"><strong id="resultCount">0</strong> bikes match</div>
+      <div class="spec-line">
+        Sort:
+        <select id="fSort" style="background:transparent; color:var(--ink); border:0; font-family:var(--font-mono); font-size:11px; letter-spacing:.15em; padding:4px; outline:none; cursor:pointer;">
+          <option value="newest">Newest First</option>
+          <option value="low">Price ↑</option>
+          <option value="high">Price ↓</option>
+          <option value="cc">Capacity ↓</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- GRID -->
+    <div class="bike-grid" id="bikeGrid"></div>
+    <div id="emptyState" style="display:none; padding:80px 20px; text-align:center; border:1px dashed var(--line); margin-top:24px;">
+      <div style="font-family:var(--font-display); font-size:48px; color:var(--ink-mute);">No matches.</div>
+      <p style="margin-top:14px;">Try widening your filters, or call us — we may have it inbound.</p>
+      <a class="btn btn-ghost" href="tel:+94771234567" style="margin-top:24px">Call Workshop <span class="arrow"></span></a>
+    </div>
+  </div>
+</section>
+
+<!-- QUICK VIEW MODAL -->
+<div class="modal" id="quickView" aria-hidden="true">
+  <div class="modal-backdrop" data-close></div>
+  <div class="modal-panel">
+    <button class="modal-close" data-close aria-label="Close">×</button>
+    <div id="quickViewBody"></div>
+  </div>
+</div>
+
+<!-- INQUIRY CTA -->
+<section class="section">
+  <div class="container">
+    <div class="cta-banner">
+      <div>
+        <span class="kicker">Looking for something specific?</span>
+        <h3 style="margin-top:16px">Tell us what<br>you're hunting.</h3>
+        <p style="margin-top:20px; max-width:48ch;">We have a network. If we don't have it on the floor, we know who does. Aprilia RSV4, Triumph Speed Triple, KTM 890, MV Agusta — we can source.</p>
+      </div>
+      <div class="ctas">
+        <a class="btn" href="contact.html#book">Send a Brief <span class="arrow"></span></a>
+        <a class="btn btn-ghost" href="https://wa.me/94771234567">WhatsApp <span class="arrow"></span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/site.js"></script>
+<script>
+  const D = window.BH_DATA;
+  const $ = (s) => document.querySelector(s);
+  const fmtLKR = (n) => "LKR " + n.toLocaleString("en-LK");
+
+  // Populate brand/type dropdowns
+  const brands = [...new Set(D.bikes.map(b => b.brand))].sort();
+  const types = [...new Set(D.bikes.map(b => b.type))].sort();
+  $("#fBrand").insertAdjacentHTML("beforeend", brands.map(b => `<option value="${b}">${b}</option>`).join(""));
+  $("#fType").insertAdjacentHTML("beforeend", types.map(t => `<option value="${t}">${t}</option>`).join(""));
+
+  function inRange(val, range) {
+    if (!range) return true;
+    const [lo, hi] = range.split("-").map(Number);
+    return val >= lo && val <= hi;
+  }
+
+  function render() {
+    const brand = $("#fBrand").value;
+    const cc = $("#fCc").value;
+    const type = $("#fType").value;
+    const maxPrice = parseInt($("#fPrice").value || "0", 10);
+    const reg = $("#fReg").value;
+    const sort = $("#fSort").value;
+
+    let filtered = D.bikes.filter(b =>
+      (!brand || b.brand === brand) &&
+      (!type || b.type === type) &&
+      inRange(b.cc, cc) &&
+      (!maxPrice || b.price <= maxPrice) &&
+      (!reg || (reg === "yes" ? b.registered : !b.registered))
+    );
+
+    filtered.sort((a, b) => {
+      if (sort === "low") return a.price - b.price;
+      if (sort === "high") return b.price - a.price;
+      if (sort === "cc") return b.cc - a.cc;
+      return b.year - a.year;
+    });
+
+    $("#resultCount").textContent = filtered.length.toString().padStart(2, "0");
+    $("#bikeGrid").innerHTML = filtered.map(b => `
+      <div class="bike-card" data-id="${b.id}">
+        <a class="img" href="bike.html?id=${b.id}" style="background-image:url('${b.img}'); display:block; position:relative;">
+          ${b.badge ? `<span class="badge">${b.badge}</span>` : ""}
+          <span class="reg-badge ${b.registered ? '' : 'unreg'}">${b.registered ? '● Registered' : '○ Unregistered'}</span>
+          <button class="quick-btn" data-quick="${b.id}" aria-label="Quick view">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12Z"/><circle cx="12" cy="12" r="3"/></svg>
+            Quick View
+          </button>
+        </a>
+        <div class="info">
+          <div class="brand">${b.brand} · ${b.type}</div>
+          <h3><a href="bike.html?id=${b.id}" style="color:inherit;">${b.model}</a></h3>
+          <div class="specs">
+            <span><strong>${b.cc} cc</strong><small>Engine</small></span>
+            <span><strong>${b.year}</strong><small>Year</small></span>
+            <span><strong>${(b.mileage/1000).toFixed(1)}K</strong><small>Km</small></span>
+          </div>
+          <div class="foot">
+            <div class="price">${fmtLKR(b.price)} <small>LKR</small></div>
+            <a class="btn btn-line" href="bike.html?id=${b.id}">View Details</a>
+          </div>
+        </div>
+      </div>
+    `).join("");
+
+    $("#emptyState").style.display = filtered.length === 0 ? "block" : "none";
+
+    // Hook up quick view buttons
+    document.querySelectorAll("[data-quick]").forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        openQuickView(btn.dataset.quick);
+      });
+    });
+  }
+
+  // QUICK VIEW MODAL
+  const modal = document.getElementById("quickView");
+  function openQuickView(id) {
+    const b = D.bikes.find(x => x.id === id);
+    if (!b) return;
+    document.getElementById("quickViewBody").innerHTML = `
+      <div class="qv-grid">
+        <div class="qv-img" style="background-image:url('${b.img}');">
+          ${b.badge ? `<span class="badge">${b.badge}</span>` : ""}
+          <span class="reg-badge ${b.registered ? '' : 'unreg'}">${b.registered ? '● Registered' : '○ Unregistered'}</span>
+        </div>
+        <div class="qv-info">
+          <div class="spec-line" style="color:var(--red);">${b.brand} · ${b.type}</div>
+          <h3 class="h3" style="margin-top:8px; line-height:.95;">${b.model}</h3>
+          <div style="font-family:var(--font-display); font-size:32px; margin-top:14px;">${fmtLKR(b.price)} <span style="font-family:var(--font-mono); font-size:11px; color:var(--ink-mute);">LKR</span></div>
+          <div class="qv-specs">
+            <div><div class="spec-line">ENGINE</div><div class="v">${b.cc} cc</div></div>
+            <div><div class="spec-line">YEAR</div><div class="v">${b.year}</div></div>
+            <div><div class="spec-line">MILEAGE</div><div class="v">${b.mileage.toLocaleString()} km</div></div>
+            <div><div class="spec-line">POWER</div><div class="v">${(b.power||'').split('@')[0].trim() || '—'}</div></div>
+            <div><div class="spec-line">WEIGHT</div><div class="v">${b.weight || '—'}</div></div>
+            <div><div class="spec-line">COLOR</div><div class="v">${b.color}</div></div>
+          </div>
+          <p style="font-size:14px; color:var(--ink-dim); margin-top:16px;">${b.desc || ''}</p>
+          <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:24px;">
+            <a class="btn" href="bike.html?id=${b.id}">View Full Details <span class="arrow"></span></a>
+            <a class="btn btn-ghost" href="tel:+94771234567">Call to Inquire</a>
+          </div>
+        </div>
+      </div>
+    `;
+    modal.classList.add("open");
+    modal.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+  }
+  modal.addEventListener("click", (e) => {
+    if (e.target.hasAttribute("data-close")) {
+      modal.classList.remove("open");
+      modal.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+    }
+  });
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && modal.classList.contains("open")) {
+      modal.classList.remove("open"); document.body.style.overflow = "";
+    }
+  });
+
+  ["change","input"].forEach(evt => {
+    document.querySelectorAll("#filters select, #filters input, #fSort").forEach(el => el.addEventListener(evt, render));
+  });
+  $("#fReset").addEventListener("click", () => setTimeout(render, 0));
+
+  render();
+</script>
+</body>
+</html>

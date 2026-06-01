@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Journal — Bike House</title>
+<meta name="description" content="Motorcycle tips, maintenance guides, build diaries, and notes from the workshop floor.">
+<link rel="icon" href="assets/img/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@400;500;600;700&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body data-page="blog">
+
+<section class="page-hero" data-screen-label="01 Blog Hero">
+  <div class="container">
+    <div class="crumbs">Home <span>/</span> Journal</div>
+    <h1>The<br><span style="color:var(--red)">Journal.</span></h1>
+    <p class="lead" style="margin-top:28px; max-width:62ch;">
+      Tips, build diaries, maintenance deep-dives, and the occasional opinion piece on what's worth riding right now.
+    </p>
+  </div>
+</section>
+
+<!-- FEATURED -->
+<section class="section-tight">
+  <div class="container">
+    <div class="blog-feature" id="feature"></div>
+  </div>
+</section>
+
+<!-- CATEGORY FILTER -->
+<section class="section-tight" style="padding-top:0">
+  <div class="container">
+    <div style="display:flex; flex-wrap:wrap; gap:10px; align-items:center; padding-bottom:32px; border-bottom:1px solid var(--line-soft); margin-bottom:48px;">
+      <span class="spec-line" style="margin-right:8px;">Topics:</span>
+      <button class="chip cat-chip active" data-cat="">All Articles</button>
+      <button class="chip cat-chip" data-cat="Garage Updates">Garage Updates</button>
+      <button class="chip cat-chip" data-cat="Diagnostics">Diagnostics</button>
+      <button class="chip cat-chip" data-cat="Builds">Builds</button>
+      <button class="chip cat-chip" data-cat="Maintenance">Maintenance</button>
+      <button class="chip cat-chip" data-cat="Touring">Touring</button>
+      <button class="chip cat-chip" data-cat="Riding Culture">Riding Culture</button>
+    </div>
+
+    <div class="blog-grid" id="blogGrid"></div>
+
+    <div style="margin-top:64px; text-align:center;">
+      <button class="btn btn-ghost" id="loadMore">Load More Articles <span class="arrow"></span></button>
+    </div>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section class="section">
+  <div class="container">
+    <div class="cta-banner">
+      <div>
+        <span class="kicker">Stay in the loop</span>
+        <h3 style="margin-top:16px">Monthly notes<br>from the workshop.</h3>
+        <p style="margin-top:20px; max-width:48ch;">One email a month. New builds, maintenance reminders, parts that landed, bikes worth a look. No spam.</p>
+      </div>
+      <form style="display:flex; gap:12px; flex-wrap:wrap; align-items:center;" onsubmit="event.preventDefault(); this.querySelector('input').value=''; this.querySelector('.ok').style.display='inline-block';">
+        <input type="email" required placeholder="you@example.lk" style="background:var(--bg); border:1px solid var(--line); color:var(--ink); padding:14px 18px; font-family:var(--font-body); font-size:14px; min-width:240px; border-radius:var(--radius);">
+        <button class="btn" type="submit">Subscribe <span class="arrow"></span></button>
+        <span class="ok" style="display:none; color:var(--red); font-family:var(--font-mono); font-size:11px; letter-spacing:.18em; text-transform:uppercase;">✓ Subscribed</span>
+      </form>
+    </div>
+  </div>
+</section>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/site.js"></script>
+<script>
+  const D = window.BH_DATA;
+  const feature = D.posts[0];
+  document.getElementById("feature").innerHTML = `
+    <a class="img" href="post.html?id=${feature.id}" style="background-image:url('${feature.img}'); display:block; position:relative;">
+      <span style="position:absolute; left:18px; top:18px; background:var(--red); color:#fff; padding:6px 12px; font-family:var(--font-mono); font-size:10px; letter-spacing:.18em; text-transform:uppercase;">Featured</span>
+    </a>
+    <div class="text">
+      <div class="meta"><span class="red">${feature.cat}</span> · ${feature.date} · ${feature.read || '7 min read'}</div>
+      <h2 class="h2"><a href="post.html?id=${feature.id}">${feature.title}</a></h2>
+      <p style="font-size:16px; color:var(--ink-dim);">${feature.excerpt}</p>
+      <div style="margin-top:8px"><a class="btn-line cond" href="post.html?id=${feature.id}">Read the full article →</a></div>
+    </div>
+  `;
+
+  function renderGrid(cat = "") {
+    const rest = D.posts.slice(1);
+    const filtered = cat ? rest.filter(p => p.cat === cat) : rest;
+    document.getElementById("blogGrid").innerHTML = filtered.length === 0
+      ? `<div style="grid-column:1/-1; padding:48px; text-align:center; border:1px dashed var(--line);"><p>No articles in this topic yet — check back soon.</p></div>`
+      : filtered.map(p => `
+        <a class="blog-card" href="post.html?id=${p.id}">
+          <div class="img" style="background-image:url('${p.img}')"></div>
+          <div class="meta"><span class="red">${p.cat}</span> · ${p.date} · ${p.read || '5 min read'}</div>
+          <h4>${p.title}</h4>
+          <p class="excerpt">${p.excerpt}</p>
+        </a>
+      `).join("");
+  }
+  renderGrid();
+
+  document.querySelectorAll(".cat-chip").forEach(chip => {
+    chip.addEventListener("click", () => {
+      document.querySelectorAll(".cat-chip").forEach(c => c.classList.remove("active"));
+      chip.classList.add("active");
+      renderGrid(chip.dataset.cat);
+    });
+  });
+
+  document.getElementById("loadMore").addEventListener("click", function() {
+    this.innerHTML = "All Caught Up <span class='arrow'></span>";
+    this.disabled = true;
+    this.style.opacity = ".5";
+  });
+</script>
+
+<style>
+  .cat-chip {
+    cursor: pointer;
+    transition: all .25s;
+    background: var(--bg-soft);
+    color: var(--ink-dim);
+    font-family: var(--font-mono);
+  }
+  .cat-chip:hover { color: var(--ink); border-color: var(--line); }
+  .cat-chip.active {
+    background: var(--red);
+    color: #fff;
+    border-color: var(--red);
+  }
+</style>
+</body>
+</html>

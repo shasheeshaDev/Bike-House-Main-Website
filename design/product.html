@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Product Details — Bike House</title>
+<meta name="description" content="Premium motorcycle parts and gear. Direct from the brand, fitted by experts.">
+<link rel="icon" href="assets/img/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@400;500;600;700&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/main.css">
+<style>
+  .pd-hero { padding-top: 120px; border-bottom: 1px solid var(--line-soft); }
+  .pd-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 64px;
+    padding-block: 56px;
+  }
+  @media (max-width: 1000px) { .pd-grid { grid-template-columns: 1fr; gap: 32px; } }
+
+  .pd-image {
+    aspect-ratio: 1 / 1;
+    background: linear-gradient(135deg, #1a1b20, #0a0a0c);
+    border: 1px solid var(--line);
+    display: grid;
+    place-items: center;
+    position: relative;
+  }
+  .pd-image > svg { width: 50%; height: 50%; opacity: .35; color: var(--ink-dim); }
+  .pd-image .tag {
+    position: absolute;
+    top: 18px; right: 18px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: .15em;
+    color: var(--ink-dim);
+    background: var(--bg);
+    padding: 6px 10px;
+    border: 1px solid var(--line);
+    text-transform: uppercase;
+  }
+  .stock {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    padding: 6px 12px;
+    border: 1px solid;
+    margin-top: 14px;
+  }
+  .stock.in { color: #5dd07a; border-color: rgba(93,208,122,.4); background: rgba(93,208,122,.05); }
+  .stock.out { color: #ffb547; border-color: rgba(255,181,71,.4); background: rgba(255,181,71,.05); }
+
+  .pd-title { font-size: clamp(40px, 5vw, 64px); line-height: .95; }
+  .pd-price {
+    font-family: var(--font-display);
+    font-size: clamp(40px, 5vw, 56px);
+    line-height: 1;
+    margin-top: 20px;
+  }
+  .pd-price small { font-family: var(--font-mono); font-size: 12px; color: var(--ink-mute); letter-spacing: .2em; }
+
+  .pd-meta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--line-soft);
+    border: 1px solid var(--line-soft);
+    margin-top: 32px;
+  }
+  .pd-meta > div { background: var(--bg-elev); padding: 16px 18px; }
+  .pd-meta .l { font-family: var(--font-mono); font-size: 10px; letter-spacing: .22em; color: var(--ink-mute); text-transform: uppercase; }
+  .pd-meta .v { font-family: var(--font-display); font-size: 20px; margin-top: 8px; line-height: 1; }
+
+  .pd-features {
+    list-style: none;
+    padding: 0;
+    margin: 16px 0 0;
+    display: grid;
+    gap: 8px;
+  }
+  .pd-features li {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: .06em;
+    color: var(--ink-dim);
+    padding: 10px 0 10px 18px;
+    border-bottom: 1px solid var(--line-soft);
+    position: relative;
+    text-transform: uppercase;
+  }
+  .pd-features li::before {
+    content: "▸";
+    color: var(--red);
+    position: absolute;
+    left: 0;
+  }
+</style>
+</head>
+<body data-page="shop">
+
+<section class="pd-hero">
+  <div class="container" style="padding-top: 60px;">
+    <div class="crumbs">Home <span>/</span> <a href="shop.html">Shop</a> <span>/</span> <span id="crumbCat">…</span> <span>/</span> <span id="crumbName">…</span></div>
+    <div id="productBody"></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div style="display:grid; grid-template-columns:1.4fr 1fr; gap:64px;" class="pd-more">
+      <div>
+        <span class="kicker">Description</span>
+        <h2 class="h2" style="margin-top:14px" id="pdLongTitle">Details</h2>
+        <p style="margin-top:24px; max-width:60ch;" id="pdLong">…</p>
+        <div style="margin-top:32px;">
+          <div style="font-family:var(--font-display); font-size:22px; text-transform:uppercase;">Key features</div>
+          <ul class="pd-features" id="pdFeatures"></ul>
+        </div>
+        <hr class="hr" style="margin:40px 0;">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px;" class="pd-promises">
+          <div><div class="spec-line" style="color:var(--red);">FITMENT</div><p style="margin-top:8px; font-size:13px;">Most parts in our catalogue come with bike-specific fitment. Call with your VIN and we'll confirm.</p></div>
+          <div><div class="spec-line" style="color:var(--red);">SUPPLY</div><p style="margin-top:8px; font-size:13px;">Direct from brand. No grey-market parts, no questionable knock-offs.</p></div>
+          <div><div class="spec-line" style="color:var(--red);">LEAD TIME</div><p style="margin-top:8px; font-size:13px;">In-stock items: same-day. Special order: 2–4 weeks depending on item.</p></div>
+          <div><div class="spec-line" style="color:var(--red);">INSTALLATION</div><p style="margin-top:8px; font-size:13px;">We fit what we sell. Workshop rates apply for installation; quoted separately.</p></div>
+        </div>
+      </div>
+
+      <aside>
+        <div style="padding:28px; border:1px solid var(--line); background:var(--bg-elev); position:sticky; top:100px;">
+          <span class="kicker">Phone-inquiry only</span>
+          <h3 class="h3" style="margin-top:12px; font-size:28px;">Reserve this part<br>by phone.</h3>
+          <p style="font-size:14px; margin-top:16px;">No online checkout. We confirm fitment, price, and lead time on the call — then hold the part for you.</p>
+          <div style="display:flex; flex-direction:column; gap:10px; margin-top:24px;">
+            <a class="btn" href="tel:+94771234567">Call +94 77 123 4567 <span class="arrow"></span></a>
+            <a class="btn btn-ghost" href="https://wa.me/94771234567">WhatsApp</a>
+          </div>
+          <div style="margin-top:24px; padding-top:20px; border-top:1px solid var(--line-soft);">
+            <div class="spec-line">SKU</div>
+            <div style="font-family:var(--font-mono); font-size:14px; margin-top:6px;" id="pdSku">—</div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- RELATED -->
+<section class="section" style="background:var(--bg-soft)">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="label">[ Related Parts ]</div>
+        <h2 class="h2">From the same<br>family.</h2>
+      </div>
+      <div class="meta"><a href="shop.html" style="color:var(--ink)">All Parts →</a></div>
+    </div>
+    <div class="shop-grid" id="relatedGrid"></div>
+  </div>
+</section>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/site.js"></script>
+<script>
+  const D = window.BH_DATA;
+  const params = new URLSearchParams(location.search);
+  const id = params.get("id");
+  const p = D.products.find(x => x.id === id);
+  const fmtLKR = (n) => n.toLocaleString("en-LK");
+
+  const ICONS = {
+    helmet: `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M12 38c0-12 9-22 20-22s20 10 20 22v8H12v-8Z"/><path d="M20 38h32M28 24v8M44 24v8"/></svg>`,
+    tire: `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="32" cy="32" r="24"/><circle cx="32" cy="32" r="14"/><path d="M32 8v8M32 48v8M8 32h8M48 32h8"/></svg>`,
+    shock: `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="26" y="8" width="12" height="48" rx="2"/><path d="M22 16h20M22 24h20M22 32h20M22 40h20M22 48h20"/></svg>`,
+    exhaust: `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M8 32h36l12-8v16l-12-8"/><circle cx="50" cy="32" r="4"/></svg>`,
+    oil: `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M32 8c-8 14-14 22-14 30a14 14 0 0 0 28 0c0-8-6-16-14-30Z"/></svg>`,
+    disc: `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="32" cy="32" r="24"/><circle cx="32" cy="32" r="8"/><path d="M32 8v12M32 44v12M8 32h12M44 32h12"/></svg>`,
+    suit: `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M22 12h20l4 12-6 4v28H24V28l-6-4 4-12Z"/></svg>`,
+    chain: `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="10" y="26" width="14" height="12" rx="2"/><rect x="26" y="26" width="14" height="12" rx="2"/><rect x="42" y="26" width="14" height="12" rx="2"/></svg>`,
+  };
+
+  const body = document.getElementById("productBody");
+  if (!p) {
+    body.innerHTML = `<div style="padding:80px 0; text-align:center;"><h1 style="font-size:80px; color:var(--ink-mute);">404</h1><p>Product not found. <a href="shop.html" style="color:var(--red); border-bottom:1px solid var(--red);">View all parts</a></p></div>`;
+    document.querySelectorAll(".section").forEach((s,i)=>{ if (i>0) s.style.display="none"; });
+  } else {
+    document.title = `${p.title} — Bike House`;
+    document.getElementById("crumbCat").textContent = p.cat;
+    document.getElementById("crumbName").textContent = p.title;
+
+    body.innerHTML = `
+      <div class="pd-grid">
+        <div class="pd-image">
+          ${ICONS[p.icon] || ICONS.tire}
+          <span class="tag">${p.tag}</span>
+        </div>
+        <div>
+          <div class="spec-line" style="color:var(--red);">${p.cat} · ${p.brand || ''}</div>
+          <h1 class="pd-title" style="margin-top:10px;">${p.title}</h1>
+          <p style="margin-top:18px; color:var(--ink-dim); max-width:48ch;">${p.desc}</p>
+          <div class="pd-price">${fmtLKR(p.price)} <small>LKR</small></div>
+          <div class="stock ${p.inStock ? 'in' : 'out'}">${p.inStock ? '● In Stock — same-day pickup' : '○ Special Order — 2–4 week lead time'}</div>
+          <div class="pd-meta">
+            <div><div class="l">Brand</div><div class="v">${p.brand || '—'}</div></div>
+            <div><div class="l">Category</div><div class="v">${p.cat}</div></div>
+            <div><div class="l">SKU</div><div class="v" style="font-size:16px; font-family:var(--font-mono);">${p.sku}</div></div>
+            <div><div class="l">Stock</div><div class="v" style="font-size:16px;">${p.inStock ? 'Available' : 'On Order'}</div></div>
+          </div>
+          <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:32px;">
+            <a class="btn" href="tel:+94771234567">Call to Order <span class="arrow"></span></a>
+            <a class="btn btn-ghost" href="https://wa.me/94771234567">WhatsApp</a>
+          </div>
+        </div>
+      </div>
+    `;
+
+    document.getElementById("pdLongTitle").textContent = p.title + ".";
+    document.getElementById("pdLong").textContent = p.desc_long;
+    document.getElementById("pdFeatures").innerHTML = p.features.map(f => `<li>${f}</li>`).join("");
+    document.getElementById("pdSku").textContent = p.sku;
+
+    // Related — same category, or fallback
+    let related = D.products.filter(x => x.cat === p.cat && x.id !== id);
+    if (related.length < 3) related = related.concat(D.products.filter(x => x.id !== id && x.cat !== p.cat));
+    related = related.slice(0, 4);
+    document.getElementById("relatedGrid").innerHTML = related.map(rp => `
+      <a class="product-card" href="product.html?id=${rp.id}">
+        <div class="img">
+          ${ICONS[rp.icon] || ICONS.tire}
+          <span class="tag">${rp.tag}</span>
+        </div>
+        <div class="info">
+          <div class="cat">${rp.cat}</div>
+          <h4>${rp.title}</h4>
+          <p class="desc">${rp.desc}</p>
+          <div class="foot">
+            <div class="price">${fmtLKR(rp.price)}<small> LKR</small></div>
+            <span class="call-btn">View →</span>
+          </div>
+        </div>
+      </a>
+    `).join("");
+  }
+</script>
+
+<style>
+  @media (max-width: 900px) { .pd-more, .pd-promises { grid-template-columns: 1fr !important; } }
+  .product-card { text-decoration: none; }
+  .product-card h4 { color: var(--ink); }
+</style>
+</body>
+</html>
