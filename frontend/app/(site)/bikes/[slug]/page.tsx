@@ -127,7 +127,7 @@ export default async function BikeDetailPage({
 
       <section className="section">
         <div className="container">
-          <div className="bd-more">
+          <div className="bd-more" data-reveal-group>
             <div>
               <span className="kicker">About this bike</span>
               <h2 className="h2">{bike.model}.</h2>
@@ -190,7 +190,7 @@ export default async function BikeDetailPage({
               meta="View All"
               metaHref="/bikes"
             />
-            <div className="bike-grid">
+            <div className="bike-grid" data-reveal-group>
               {related.map((item) => (
                 <BikeCard key={item.slug} bike={item} />
               ))}

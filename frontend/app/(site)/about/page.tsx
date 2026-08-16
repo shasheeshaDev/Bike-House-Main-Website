@@ -62,7 +62,7 @@ export default function AboutPage() {
 
       <section className="section">
         <div className="container">
-          <div className="about">
+          <div className="about" data-reveal-group>
             <div className="about-img">
               <Image src="/img/diagnostic-work.jpg" alt="" fill sizes="(max-width: 900px) 100vw, 45vw" />
             </div>
@@ -102,7 +102,7 @@ export default function AboutPage() {
             heading="Eleven years on the road."
             meta="2014 → Today"
           />
-          <ol className="timeline-grid">
+          <ol className="timeline-grid" data-reveal-group>
             {MILESTONES.map(([year, label, body]) => (
               <li key={year}>
                 <div className="year">{year}</div>
@@ -121,7 +121,7 @@ export default function AboutPage() {
             heading={"Two brothers.\nOne workshop."}
             meta="Founders · Operators · Mechanics"
           />
-          <div className="founders-grid">
+          <div className="founders-grid" data-reveal-group>
             {FOUNDERS.map((person, i) => (
               <article className="founder" key={person.initials}>
                 <div className="founder-panel">
@@ -157,7 +157,7 @@ export default function AboutPage() {
       <section className="section section-alt">
         <div className="container">
           <SectionHead label="[ What We Stand For ]" heading="Four non-negotiables." />
-          <div className="feature-grid">
+          <div className="feature-grid" data-reveal-group>
             {VALUES.map(([icon, title, body]) => (
               <div className="feature" key={title}>
                 <span className="ico">

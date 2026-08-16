@@ -120,7 +120,7 @@ export default async function HomePage() {
       {/* ── About ── */}
       <section className="section">
         <div className="container">
-          <div className="about">
+          <div className="about" data-reveal-group>
             <div className="about-img">
               <Image src="/img/diagnostic-work.jpg" alt="" fill sizes="(max-width: 900px) 100vw, 45vw" />
             </div>
@@ -168,7 +168,7 @@ export default async function HomePage() {
             heading={"Everything your\nbike will ever need."}
             meta={`${services.length} Service Lines · Indoors · Insured`}
           />
-          <div className="services-grid">
+          <div className="services-grid" data-reveal-group>
             {services.map((service) => (
               <ServiceCard key={service.slug} service={service} />
             ))}
@@ -191,7 +191,7 @@ export default async function HomePage() {
               meta="View All"
               metaHref="/bikes"
             />
-            <div className="bike-grid">
+            <div className="bike-grid" data-reveal-group>
               {homeBikes.map((bike) => (
                 <BikeCard key={bike.slug} bike={bike} />
               ))}
@@ -208,7 +208,7 @@ export default async function HomePage() {
             heading={"Riders don't\ncome back by accident."}
             meta="Six reasons we earn the loyalty"
           />
-          <div className="feature-grid">
+          <div className="feature-grid" data-reveal-group>
             {whyUs.map((f) => (
               <div className="feature" key={f.title}>
                 <span className="ico">
@@ -232,12 +232,12 @@ export default async function HomePage() {
               meta="Full Catalogue"
               metaHref="/shop"
             />
-            <div className="shop-grid">
+            <div className="shop-grid" data-reveal-group>
               {homeProducts.map((product) => (
                 <ProductCard key={product.slug} product={product} />
               ))}
             </div>
-            <p className="shop-note">
+            <p className="shop-note" data-reveal>
               All purchases via phone inquiry · Call{" "}
               <a href={site.phoneHref} className="red">{site.phone}</a>
             </p>
@@ -254,7 +254,7 @@ export default async function HomePage() {
               heading={"What riders say\nwhen we're not in the room."}
               meta="5.0 · Verified Owners"
             />
-            <div className="testimonial-grid">
+            <div className="testimonial-grid" data-reveal-group>
               {homeReviews.map((item) => (
                 <TestimonialCard key={item.slug} item={item} />
               ))}
@@ -274,7 +274,7 @@ export default async function HomePage() {
               meta="All Articles"
               metaHref="/blog"
             />
-            <div className="blog-grid">
+            <div className="blog-grid" data-reveal-group>
               {homePosts.map((post) => (
                 <PostCard key={post.slug} post={post} />
               ))}

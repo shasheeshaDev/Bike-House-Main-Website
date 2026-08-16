@@ -83,7 +83,7 @@ export default async function BikesPage({
           <BikeFilters brands={brands} types={types} total={bikes.length} />
 
           {bikes.length > 0 ? (
-            <div className="bike-grid">
+            <div className="bike-grid" data-reveal-group>
               {bikes.map((bike, i) => (
                 <BikeCard key={bike.slug} bike={bike} priority={i < 3} quickView />
               ))}

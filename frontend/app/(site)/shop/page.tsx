@@ -110,7 +110,7 @@ export default async function ShopPage({
           </div>
 
           {products.length > 0 ? (
-            <div className="shop-grid">
+            <div className="shop-grid" data-reveal-group>
               {products.map((product) => (
                 <ProductCard key={product.slug} product={product} />
               ))}

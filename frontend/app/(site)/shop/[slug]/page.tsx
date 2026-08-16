@@ -118,7 +118,7 @@ export default async function ProductDetailPage({
 
       <section className="section">
         <div className="container">
-          <div className="pd-more">
+          <div className="pd-more" data-reveal-group>
             <div>
               <span className="kicker">Description</span>
               <h2 className="h2">Details</h2>
@@ -137,7 +137,7 @@ export default async function ProductDetailPage({
 
               <hr className="hr" />
 
-              <div className="pd-promises">
+              <div className="pd-promises" data-reveal>
                 {PROMISES.map(([label, body]) => (
                   <div key={label}>
                     <div className="spec-line red">{label}</div>
@@ -183,7 +183,7 @@ export default async function ProductDetailPage({
               meta="Full Catalogue"
               metaHref="/shop"
             />
-            <div className="shop-grid">
+            <div className="shop-grid" data-reveal-group>
               {related.map((item) => (
                 <ProductCard key={item.slug} product={item} />
               ))}

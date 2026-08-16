@@ -55,7 +55,10 @@ export default function ShopControls({ total }: { total: number }) {
     <>
       <div className="shop-search-bar">
         <div className="shop-search">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+          {/* Explicit width/height, as in the design source. Preflight is not
+              imported, so an unsized <svg> has no intrinsic constraint and
+              stretches to fill the flex row. */}
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
             <circle cx="11" cy="11" r="8" />
             <path d="m21 21-4.3-4.3" />
           </svg>

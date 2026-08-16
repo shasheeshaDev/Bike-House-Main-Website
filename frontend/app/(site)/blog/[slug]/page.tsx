@@ -102,7 +102,7 @@ export default async function PostPage({
             </div>
           </div>
 
-          <div className="author-block">
+          <div className="author-block" data-reveal>
             <div className="av" aria-hidden="true">{initial}</div>
             <div>
               <div className="name">{post.author ?? site.name}</div>
@@ -124,7 +124,7 @@ export default async function PostPage({
               meta="All Articles"
               metaHref="/blog"
             />
-            <div className="blog-grid">
+            <div className="blog-grid" data-reveal-group>
               {related.map((item) => (
                 <PostCard key={item.slug} post={item} />
               ))}

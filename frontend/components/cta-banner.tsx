@@ -23,7 +23,7 @@ export default function CtaBanner({
   return (
     <section className="section">
       <div className="container">
-        <div className="cta-banner">
+        <div className="cta-banner" data-reveal>
           <div>
             {kicker && <span className="kicker">{kicker}</span>}
             <h3>

@@ -41,7 +41,7 @@ export default async function ServicesPage() {
 
       <section className="section">
         <div className="container">
-          <div className="services-grid">
+          <div className="services-grid" data-reveal-group>
             {services.map((service) => (
               <ServiceCard key={service.slug} service={service} />
             ))}
@@ -55,7 +55,7 @@ export default async function ServicesPage() {
             label="[ How We Work ]"
             heading={"A bike comes in.\nThis is what happens."}
           />
-          <ol className="process-grid">
+          <ol className="process-grid" data-reveal-group>
             {PROCESS.map(([title, body], i) => (
               <li className="card process-step" key={title}>
                 <div className="num">{String(i + 1).padStart(2, "0")}</div>

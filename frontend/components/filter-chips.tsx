@@ -39,7 +39,12 @@ export default function FilterChips({
           href={hrefFor(option.value)}
           scroll={false}
           className="chip cat-chip"
-          aria-current={option.value === active ? "true" : undefined}
+          // Case-insensitive to match how the pages actually filter: a URL
+          // typed or shared as ?category=Tires selects the same products, so
+          // it must light the same chip.
+          aria-current={
+            option.value.toLowerCase() === active.toLowerCase() ? "true" : undefined
+          }
         >
           {option.label}
         </Link>

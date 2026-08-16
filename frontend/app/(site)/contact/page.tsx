@@ -40,7 +40,7 @@ export default async function ContactPage() {
 
       <section className="section" id="book">
         <div className="container">
-          <div className="contact-grid">
+          <div className="contact-grid" data-reveal-group>
             <div>
               <span className="kicker">Book a service</span>
               <h2 className="h2">
@@ -49,7 +49,7 @@ export default async function ContactPage() {
               <ContactForm services={services.map((s) => s.title)} />
             </div>
 
-            <aside className="contact-info-grid">
+            <aside className="contact-info-grid" data-reveal-group>
               {blocks.map((block) => {
                 const Wrapper = block.href ? "a" : "div";
                 const external = block.href?.startsWith("http");
@@ -83,7 +83,7 @@ export default async function ContactPage() {
       <section className="section-tight">
         <div className="container">
           <SectionHead label="[ Find Us ]" heading="Just off Horana Road." />
-          <div className="map-frame">
+          <div className="map-frame" data-reveal>
             <iframe
               src={mapEmbedUrl()}
               title="Workshop location"

@@ -107,7 +107,31 @@
 
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; }
+
+  /* Native smooth scroll is the baseline — it covers anchor jumps and
+     scrollIntoView() for everyone, including no-JS and reduced-motion users.
+     Lenis takes over only once it boots (see below). */
   html { scroll-behavior: smooth; }
+
+  /* ── Lenis smooth scroll ──────────────────────────────────────────────────
+     Lenis stamps `lenis` on <html> once it initialises, so every rule here is
+     inert until the runtime actually loads.
+
+     Lenis writes each frame with `behavior: "instant"`, so its own RAF loop is
+     immune to the CSS above — but scrollIntoView() and anchor jumps are not.
+     Left as `smooth` those would run the browser's animation while Lenis keeps
+     writing its own target every frame, and the page snaps back. Hand all
+     programmatic scrolling to Lenis while it is in charge.
+
+     Note this must key off `lenis`, not `lenis-smooth`: the latter is present
+     only *during* a smooth scroll, so it can't hold a persistent override. */
+  html.lenis, html.lenis body { height: auto; }
+  html.lenis { scroll-behavior: auto !important; }
+  html.lenis [data-lenis-prevent] { overscroll-behavior: contain; }
+  html.lenis.lenis-smooth iframe { pointer-events: none; }
+  /* Set while a modal <dialog> holds the page. `clip` rather than `hidden` so
+     the scrollbar gutter doesn't collapse and shift the layout underneath. */
+  html.lenis.lenis-stopped { overflow: clip; }
 
   body {
     background: var(--bg);
@@ -1730,6 +1754,11 @@
       font-family: var(--font-mono);
     }
     .cat-chip:hover { color: var(--ink); border-color: var(--line); }
+    /* The design toggled a `.active` class from its own JS. These chips are
+       real links instead, and mark the current filter with `aria-current` —
+       one source of truth that assistive tech reads too, so the selected state
+       is driven straight off it rather than duplicating it as a class. */
+    .cat-chip[aria-current="true"],
     .cat-chip.active {
       background: var(--red);
       color: #fff;
@@ -1750,6 +1779,10 @@
       transition: border-color .2s;
     }
     .shop-search:focus-within { border-color: var(--red); color: var(--ink); }
+    /* Belt-and-braces with the attributes on the element: without Preflight an
+       unsized <svg> is a replaced element with no intrinsic size, so it grows
+       to fill this flex row instead of sitting as a 16px glyph. */
+    .shop-search svg { width: 16px; height: 16px; flex: none; }
     .shop-search input {
       flex: 1;
       background: transparent;

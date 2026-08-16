@@ -1,6 +1,7 @@
 import SiteFooter from "@/components/site-footer";
 import SiteHeader from "@/components/site-header";
 import Preloader from "@/components/preloader";
+import Motion from "@/components/motion";
 import JsonLd from "@/components/json-ld";
 import { getServices } from "@/lib/data";
 import { organizationSchema, websiteSchema } from "@/lib/seo";
@@ -19,6 +20,7 @@ export default async function SiteLayout({
     <>
       <JsonLd data={[organizationSchema(services.map((s) => s.title)), websiteSchema()]} />
       <Preloader />
+      <Motion />
       <SiteHeader />
       <main>{children}</main>
       <SiteFooter />

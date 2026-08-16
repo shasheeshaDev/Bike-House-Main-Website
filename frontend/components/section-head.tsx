@@ -14,7 +14,7 @@ export default function SectionHead({
   metaHref?: string;
 }) {
   return (
-    <div className="section-head">
+    <div className="section-head" data-reveal>
       <div>
         {label && <div className="label">{label}</div>}
         <h2 className="h2">

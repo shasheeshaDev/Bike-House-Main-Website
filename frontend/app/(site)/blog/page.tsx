@@ -100,7 +100,7 @@ export default async function BlogPage({
           </div>
 
           {rest.length > 0 ? (
-            <div className="blog-grid">
+            <div className="blog-grid" data-reveal-group>
               {rest.map((post) => (
                 <PostCard key={post.slug} post={post} />
               ))}

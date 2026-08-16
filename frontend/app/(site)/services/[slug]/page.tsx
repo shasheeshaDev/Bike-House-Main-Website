@@ -56,7 +56,7 @@ export default async function ServiceDetailPage({
 
       <section className="section">
         <div className="container">
-          <div className="bd-more">
+          <div className="bd-more" data-reveal-group>
             <div>
               <span className="kicker">What&apos;s involved</span>
               <h2 className="h2">{service.title}.</h2>
@@ -119,7 +119,7 @@ export default async function ServiceDetailPage({
               meta="All Services"
               metaHref="/services"
             />
-            <div className="services-grid">
+            <div className="services-grid" data-reveal-group>
               {others.map((item) => (
                 <ServiceCard key={item.slug} service={item} />
               ))}
