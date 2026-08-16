@@ -1,55 +1,54 @@
-import { MetadataRoute } from "next";
-import { groq } from "next-sanity";
-import { sanityFetch } from "@/sanity/lib/live";
+import type { MetadataRoute } from "next";
+import { getBikes, getPosts, getProducts, getServices } from "@/lib/data";
+import { abs } from "@/lib/seo";
 
-async function getPagesSitemap(): Promise<MetadataRoute.Sitemap[]> {
-  const pagesQuery = groq`
-    *[_type == 'page'] | order(slug.current) {
-      'url': $baseUrl + select(slug.current == 'index' => '', '/' + slug.current),
-      'lastModified': _updatedAt,
-      'changeFrequency': 'daily',
-      'priority': select(
-        slug.current == 'index' => 1,
-        0.5
-      )
-    }
-  `;
-
-  const { data } = await sanityFetch({
-    query: pagesQuery,
-    params: {
-      baseUrl: process.env.NEXT_PUBLIC_SITE_URL,
-    },
-  });
-
-  return data as MetadataRoute.Sitemap[];
-}
-
-async function getPostsSitemap(): Promise<MetadataRoute.Sitemap[]> {
-  const postsQuery = groq`
-    *[_type == 'post'] | order(_updatedAt desc) {
-      'url': $baseUrl + '/blog/' + slug.current,
-      'lastModified': _updatedAt,
-      'changeFrequency': 'weekly',
-      'priority': 0.7
-    }
-  `;
-
-  const { data } = await sanityFetch({
-    query: postsQuery,
-    params: {
-      baseUrl: process.env.NEXT_PUBLIC_SITE_URL,
-    },
-  });
-
-  return data as MetadataRoute.Sitemap[];
-}
-
-export default async function sitemap(): Promise<MetadataRoute.Sitemap[]> {
-  const [pages, posts] = await Promise.all([
-    getPagesSitemap(),
-    getPostsSitemap(),
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const [bikes, products, posts, services] = await Promise.all([
+    getBikes(),
+    getProducts(),
+    getPosts(),
+    getServices(),
   ]);
 
-  return [...pages, ...posts];
+  const now = new Date();
+
+  const staticPages: MetadataRoute.Sitemap = (
+    [
+      { url: abs("/"), changeFrequency: "weekly", priority: 1 },
+      { url: abs("/bikes"), changeFrequency: "daily", priority: 0.9 },
+      { url: abs("/shop"), changeFrequency: "weekly", priority: 0.8 },
+      { url: abs("/services"), changeFrequency: "monthly", priority: 0.8 },
+      { url: abs("/blog"), changeFrequency: "weekly", priority: 0.7 },
+      { url: abs("/about"), changeFrequency: "monthly", priority: 0.6 },
+      { url: abs("/contact"), changeFrequency: "monthly", priority: 0.6 },
+    ] as const
+  ).map((entry) => ({ ...entry, lastModified: now }));
+
+  return [
+    ...staticPages,
+    ...bikes.map((b) => ({
+      url: abs(`/bikes/${b.slug}`),
+      lastModified: now,
+      changeFrequency: "weekly" as const,
+      priority: 0.8,
+    })),
+    ...services.map((s) => ({
+      url: abs(`/services/${s.slug}`),
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    })),
+    ...products.map((p) => ({
+      url: abs(`/shop/${p.slug}`),
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
+    })),
+    ...posts.map((p) => ({
+      url: abs(`/blog/${p.slug}`),
+      lastModified: new Date(p.publishedAt),
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
+    })),
+  ];
 }

@@ -1,50 +1,25 @@
 {
-  "name": "sanityblocks",
-  "version": "1.2.0",
+  "name": "bike-house-studio",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "sanity dev",
     "start": "sanity start",
     "build": "sanity build",
     "deploy": "sanity deploy",
-    "typegen": "rm -rf schema.json && sanity schema extract && sanity typegen generate",
     "typecheck": "tsc --noEmit",
-    "create-sample-page": "tsx scripts/create-sample-blocks-page.ts",
-    "add-sample-to-menu": "tsx scripts/add-sample-page-to-menu.ts",
-    "create-category-pages": "tsx scripts/create-category-pages.ts",
-    "add-showcase-menu": "tsx scripts/add-showcase-menu.ts",
-    "remove-all-samples": "tsx scripts/remove-all-sample-pages.ts"
+    "import-seed": "sanity dataset import seed.ndjson production --replace"
   },
   "dependencies": {
-    "@sanity/code-input": "^7.1.2",
-    "@sanity/icons": "^3.7.4",
-    "@sanity/image-url": "^2.1.1",
-    "@sanity/orderable-document-list": "^1.5.1",
-    "@sanity/preview-url-secret": "^4.0.7",
-    "@sanity/ui": "^3.2.0",
-    "@sanity/vision": "^5.28.0",
-    "class-variance-authority": "^0.7.1",
-    "clsx": "^2.1.1",
-    "lucide-react": "^1.17.0",
-    "react": "^19.2.6",
-    "react-dom": "^19.2.6",
-    "react-player": "^3.4.0",
-    "sanity": "^5.28.0",
-    "sanity-plugin-iframe-pane": "^5.0.13",
-    "sanity-plugin-media": "^4.3.0",
-    "styled-components": "^6.4.2",
-    "tailwind-merge": "^3.6.0"
+    "@sanity/vision": "^4.10.1",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "sanity": "^4.10.1",
+    "styled-components": "^6.1.19"
   },
   "devDependencies": {
-    "@sanity/client": "^7.22.1",
-    "@sanity/eslint-config-studio": "^6.0.0",
-    "@sanity/types": "^5.28.0",
-    "@types/node": "^25.9.1",
-    "@types/react": "^19.2.15",
-    "@types/react-dom": "^19.2.3",
-    "dotenv": "^17.4.2",
-    "eslint": "^9.36.0",
-    "tsx": "^4.22.4",
-    "typescript": "^5.9.2"
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "typescript": "^5"
   }
 }

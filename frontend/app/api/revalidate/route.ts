@@ -1,59 +1,40 @@
-import { revalidatePath, revalidateTag } from "next/cache";
-import { type NextRequest, NextResponse } from "next/server";
-import { parseBody } from "next-sanity/webhook";
+import { revalidateTag } from "next/cache";
+import { NextRequest, NextResponse } from "next/server";
+import { SANITY_TAG } from "@/lib/data";
 
-export async function POST(req: NextRequest) {
-  try {
-    const { body, isValidSignature } = await parseBody<{
-      _type: string;
-      slug?: { current?: string };
-    }>(req, process.env.SANITY_REVALIDATE_SECRET);
+/**
+ * Instant cache purge, called by the Sanity webhook on publish/unpublish.
+ *
+ * Configure at sanity.io → project → API → Webhooks:
+ *   URL:     https://<your-domain>/api/revalidate?secret=<SANITY_REVALIDATE_SECRET>
+ *   Dataset: production · Trigger on: create, update, delete
+ *
+ * The shared secret in the URL must match SANITY_REVALIDATE_SECRET. Can also
+ * be called manually (POST or GET) to force a refresh.
+ */
+export async function POST(request: NextRequest) {
+  return handle(request);
+}
 
-    // Validate the request signature (recommended for production)
-    if (!isValidSignature && process.env.NODE_ENV === "production") {
-      return new Response("Invalid signature", { status: 401 });
-    }
+export async function GET(request: NextRequest) {
+  return handle(request);
+}
 
-    if (!body?._type) {
-      return new Response("Bad Request", { status: 400 });
-    }
-
-    // Revalidate based on document type
-    switch (body._type) {
-      case "settings":
-      case "header":
-      case "footer":
-      case "banner":
-        // These are global, revalidate everything
-        revalidatePath("/", "layout");
-        break;
-      case "page":
-        revalidatePath("/", "layout");
-        if (body.slug?.current) {
-          revalidatePath(`/${body.slug.current}`);
-        }
-        break;
-      case "post":
-        revalidatePath("/blog", "page");
-        if (body.slug?.current) {
-          revalidatePath(`/blog/${body.slug.current}`);
-        }
-        break;
-      case "contact":
-        revalidatePath("/contact");
-        break;
-      default:
-        // Fallback: revalidate everything
-        revalidatePath("/", "layout");
-    }
-
-    return NextResponse.json({
-      status: 200,
-      revalidated: true,
-      now: Date.now(),
-    });
-  } catch (err: any) {
-    console.error(err);
-    return new Response(err.message, { status: 500 });
+async function handle(request: NextRequest) {
+  const secret = process.env.SANITY_REVALIDATE_SECRET;
+  if (!secret) {
+    return NextResponse.json(
+      { revalidated: false, message: "SANITY_REVALIDATE_SECRET is not configured" },
+      { status: 500 },
+    );
   }
+  if (request.nextUrl.searchParams.get("secret") !== secret) {
+    return NextResponse.json({ revalidated: false, message: "Invalid secret" }, { status: 401 });
+  }
+
+  // "max" marks the tag stale with stale-while-revalidate semantics: the next
+  // visit triggers a background refresh and content is fresh from then on —
+  // without blocking any visitor on a Sanity round-trip.
+  revalidateTag(SANITY_TAG, "max");
+  return NextResponse.json({ revalidated: true, tag: SANITY_TAG, now: Date.now() });
 }
