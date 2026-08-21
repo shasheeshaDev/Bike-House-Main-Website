@@ -59,11 +59,34 @@ export const service = defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: "headline",
+      title: "Detail Headline",
+      type: "string",
+      description:
+        'Display heading for the band on /services. Use a line break with \\n — e.g. "Dyno-mapped\\nor it didn\'t happen."',
+    }),
+    defineField({
       name: "intro",
       title: "Detail Intro",
       type: "text",
       rows: 3,
-      description: "Lead paragraph on the service's own page.",
+      description:
+        "Lead paragraph on the service's own page, and the paragraph in the /services band.",
+    }),
+    defineField({
+      name: "image",
+      title: "Detail Image",
+      type: "image",
+      options: { hotspot: true },
+      description: "Shown beside the copy on /services. Falls back to the icon panel.",
+    }),
+    defineField({
+      name: "readout",
+      title: "Scan-tool Readout",
+      type: "array",
+      of: [{ type: "string" }],
+      description:
+        "Optional monospace terminal lines rendered instead of the image — used by ECU Diagnostics.",
     }),
     defineField({
       name: "body",

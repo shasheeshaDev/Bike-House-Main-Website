@@ -117,9 +117,21 @@ export interface Service {
   icon: string;
   /** Card copy on the services grid. */
   description: string;
-  /** Detail-page hero lead. */
+  /**
+   * Display heading for the alternating detail band on /services. Uses \n for
+   * the design's deliberate two-line break, as SectionHead and CtaBanner do.
+   */
+  headline?: string;
+  /** Detail-page hero lead, and the paragraph in the /services detail band. */
   intro?: string;
   body?: RichText;
-  /** Bullet points on the detail page. */
+  /** Bullet points on the detail page and in the /services detail band. */
   includes?: string[];
+  /** Photo for the detail band. Falls back to the icon panel when absent. */
+  image?: string;
+  /**
+   * Monospace scan-tool readout rendered instead of a photo — the design gives
+   * ECU Diagnostics this treatment in place of an image.
+   */
+  readout?: string[];
 }

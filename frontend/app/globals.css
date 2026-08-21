@@ -2264,6 +2264,90 @@
   }
 
 
+  /* ── Service detail bands (design/services.html `.srv-detail`) ───────────
+     The design carried these as inline styles on the section; they are ported
+     here so the alternation, the readout panel and the icon fallback are all
+     part of the design system rather than repeated per service. */
+  .srv-detail {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: center;
+  }
+  /* Copy stays first in the DOM for reading order; odd bands flip visually. */
+  .srv-detail.rev .srv-copy { order: 2; }
+
+  /* The global .h2 tops out at 84px, which is sized for a full-width heading.
+     In a half-width band column that overflows and breaks mid-hyphen
+     ("BOTTOM-" / "END."), destroying the two-line break the copy is written
+     for. Scale it to the column so the authored breaks are the ones that
+     land. */
+  .srv-copy .h2 {
+    margin-top: 14px;
+    font-size: clamp(30px, 3vw, 46px);
+  }
+  .srv-intro { margin-top: 24px; }
+  .srv-list {
+    list-style: none;
+    padding: 0;
+    margin: 24px 0 0;
+    display: grid;
+    gap: 10px;
+  }
+  /* The design typed the ▸ into each list item; it is decorative, so it is a
+     marker here instead — screen readers do not announce it. */
+  .srv-list .spec-line::before {
+    content: "\25B8";
+    color: var(--red);
+    margin-right: 8px;
+  }
+  .srv-cta { margin-top: 32px; }
+
+  .srv-visual {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    border: 1px solid var(--line);
+    overflow: hidden;
+    background: var(--bg-elev);
+  }
+  .srv-visual img { object-fit: cover; }
+
+  .srv-readout {
+    background: linear-gradient(180deg, #1c1d21, #0a0a0b);
+    display: grid;
+    place-items: center;
+    padding: 32px;
+  }
+  .srv-readout pre {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--red);
+    line-height: 1.7;
+    margin: 0;
+    /* A fixed-width readout must not force the band wider on small screens. */
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+  .srv-visual-icon {
+    display: grid;
+    place-items: center;
+    color: var(--ink-dim);
+    opacity: .35;
+  }
+
+  @media (max-width: 900px) {
+    .srv-detail { grid-template-columns: 1fr; gap: 32px; }
+    /* One column: the visual always follows the copy it belongs to. */
+    .srv-detail.rev .srv-copy { order: 0; }
+  }
+
+  @media (max-width: 520px) {
+    .srv-readout { padding: 20px; }
+    .srv-readout pre { font-size: 11px; }
+  }
+
+
   /* ── Header at small widths ──────────────────────────────────────────────
      The design hides the nav links and phone below 1080px but keeps the CTA.
      On a 390px screen the brand lockup + CTA + burger overflow the gutter by

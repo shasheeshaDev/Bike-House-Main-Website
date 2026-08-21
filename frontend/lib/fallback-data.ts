@@ -1,4 +1,4 @@
-import { postBodies } from "./fallback-rich.ts";
+import { postBodies, serviceBodies } from "./fallback-rich.ts";
 import type { Bike, Post, Product, Service, Testimonial } from "./types";
 
 /**
@@ -15,7 +15,19 @@ export const fallbackServices: Service[] = [
     num: "01",
     title: "Engine Repairs",
     icon: "cog",
-    description: "Top-end rebuilds, full bottom-end overhauls and cylinder work for inline-4, V-twin and parallel-twin engines.",
+    description:
+      "Top-end rebuilds, full bottom-end overhauls and cylinder work for inline-4, V-twin and parallel-twin engines.",
+    headline: "Top-end. Bottom-end.\nEverything in between.",
+    intro:
+      "We rebuild four-stroke engines from inline-4 superbikes to V-twin nakeds. Cylinder honing, valve work, piston replacement, full bottom-end overhauls. Every rebuild gets a leak-down test before assembly and a dyno-validated run-in.",
+    includes: [
+      "Cylinder head rebuilds & valve seating",
+      "Crankshaft & conrod replacement",
+      "Piston & ring replacement",
+      "Gasket & seal replacement",
+    ],
+    image: "/img/diagnostic-work.jpg",
+    body: serviceBodies["engine-repairs"],
   },
   {
     slug: "performance-tuning",
@@ -23,7 +35,19 @@ export const fallbackServices: Service[] = [
     num: "02",
     title: "Performance Tuning",
     icon: "gauge",
-    description: "Dyno-backed fuel/ignition mapping, exhaust upgrades and intake work to unlock the engine's real potential.",
+    description:
+      "Dyno-backed fuel/ignition mapping, exhaust upgrades and intake work to unlock the engine's real potential.",
+    headline: "Dyno-mapped\nor it didn't happen.",
+    intro:
+      "Real tuning is data-driven. We run before-and-after dyno pulls on every map. Custom fuel/ignition tables for full systems, ECU flashes for OEM-friendly upgrades, and intake/exhaust pairings that actually work together.",
+    includes: [
+      "Custom fuel & ignition mapping",
+      "Power Commander & Rapid Bike installs",
+      "Full-system exhaust development",
+      "Air filter & intake matching",
+    ],
+    image: "/img/cbr1000rr-front.jpg",
+    body: serviceBodies["performance-tuning"],
   },
   {
     slug: "ecu-diagnostics",
@@ -31,7 +55,31 @@ export const fallbackServices: Service[] = [
     num: "03",
     title: "ECU Diagnostics",
     icon: "cpu",
-    description: "OBD-II and OEM-grade tools for BMW, Ducati, Yamaha, Honda, KTM and Kawasaki. Fault codes, live data, recalibration.",
+    description:
+      "OBD-II and OEM-grade tools for BMW, Ducati, Yamaha, Honda, KTM and Kawasaki. Fault codes, live data, recalibration.",
+    headline: "Read the ECU\nlike a doctor.",
+    intro:
+      "OEM-grade scan tools for BMW (Motoscan), Ducati (DDS), Yamaha (YDT), KTM (KTMScan), Honda (HDS) and Kawasaki. Live data, fault history, throttle adaptation resets, immobiliser pairing — work most workshops can't do.",
+    includes: [
+      "Live data & fault code reading",
+      "Throttle adaptation & idle reset",
+      "ABS & traction calibration",
+      "Immobiliser & key programming",
+    ],
+    readout: [
+      "> CONNECT BMW_S1000RR",
+      "ECU_VER: 0224a3 \u2713",
+      "RPM: 1240 / TPS: 4.2%",
+      "COOLANT: 87\u00B0C",
+      "LAMBDA_FR: 0.99",
+      "LAMBDA_RR: 1.01",
+      "DTC: \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500",
+      "P0420 \u00B7 CAT BANK 1 LOW",
+      "P1455 \u00B7 EVAP VENT",
+      "> CLEAR_DTC \u2713",
+      "> SAVE_LOG /bh/24-11-18",
+    ],
+    body: serviceBodies["ecu-diagnostics"],
   },
   {
     slug: "suspension-brakes",
@@ -39,7 +87,19 @@ export const fallbackServices: Service[] = [
     num: "04",
     title: "Suspension & Brakes",
     icon: "suspension",
-    description: "Fork rebuilds, shock servicing, sag setup, brake bleeding, master-cylinder and caliper restoration.",
+    description:
+      "Fork rebuilds, shock servicing, sag setup, brake bleeding, master-cylinder and caliper restoration.",
+    headline: "Set up for your weight.\nNot the factory's guess.",
+    intro:
+      "Stock suspension is sprung for a 75 kg rider on a European test loop. We re-spring and re-valve for what you actually weigh and where you actually ride. Fork rebuilds, shock servicing, and a full sag setup before the bike leaves the floor.",
+    includes: [
+      "Fork rebuilds & oil replacement",
+      "Rear shock service & re-valving",
+      "Static & rider sag setup",
+      "Brake bleed, caliper & master-cylinder rebuild",
+    ],
+    image: "/img/silver-r1.jpg",
+    body: serviceBodies["suspension-brakes"],
   },
   {
     slug: "custom-modifications",
@@ -47,7 +107,19 @@ export const fallbackServices: Service[] = [
     num: "05",
     title: "Custom Modifications",
     icon: "wrench",
-    description: "Tail tidies, fairing work, exhaust fabrication, café racer and supermoto conversions — built clean, built to ride.",
+    description:
+      "Tail tidies, fairing work, exhaust fabrication, caf\u00E9 racer and supermoto conversions — built clean, built to ride.",
+    headline: "Built clean.\nBuilt to ride.",
+    intro:
+      "Tail tidies, subframe work, exhaust fabrication and full caf\u00E9 racer or supermoto conversions. We fabricate in-house, so brackets fit the first time and nothing looks bolted on as an afterthought.",
+    includes: [
+      "Caf\u00E9 racer & supermoto conversions",
+      "Custom exhaust fabrication",
+      "Tail tidy, subframe & fairing work",
+      "Lighting, wiring & instrument swaps",
+    ],
+    image: "/img/red-supermoto.jpg",
+    body: serviceBodies["custom-modifications"],
   },
   {
     slug: "oil-maintenance",
@@ -55,7 +127,19 @@ export const fallbackServices: Service[] = [
     num: "06",
     title: "Oil & Maintenance",
     icon: "droplet",
-    description: "Genuine Motul, Castrol and Mobil1 oils. Filter changes, coolant flushes, full A-class service intervals.",
+    description:
+      "Genuine Motul, Castrol and Mobil1 oils. Filter changes, coolant flushes, full A-class service intervals.",
+    headline: "The boring work\nthat saves engines.",
+    intro:
+      "Genuine Motul, Castrol and Mobil 1 \u2014 with the invoice to prove it. Full A-class service intervals, coolant flushes, valve clearance checks and chain care, logged against your bike so you always know what was done and when.",
+    includes: [
+      "Oil & filter changes to OEM spec",
+      "Coolant, brake & clutch fluid flushes",
+      "Valve clearance inspection",
+      "Full service-history logging",
+    ],
+    image: "/img/yellow-wr.jpg",
+    body: serviceBodies["oil-maintenance"],
   },
   {
     slug: "accident-repairs",
@@ -63,7 +147,19 @@ export const fallbackServices: Service[] = [
     num: "07",
     title: "Accident Repairs",
     icon: "alert",
-    description: "Frame straightening, fairing replacement and full cosmetic restoration. Insurance-friendly documentation.",
+    description:
+      "Frame straightening, fairing replacement and full cosmetic restoration. Insurance-friendly documentation.",
+    headline: "Straightened, refinished,\nand documented.",
+    intro:
+      "Frame and fork alignment measured against factory figures, panel replacement, and full cosmetic restoration. We photograph every stage and itemise every part, so your insurer receives paperwork they can actually process.",
+    includes: [
+      "Frame & fork alignment checks",
+      "Fairing replacement & paint matching",
+      "Insurance-ready photo documentation",
+      "Post-repair geometry & safety inspection",
+    ],
+    image: "/img/ducati-hyper.jpg",
+    body: serviceBodies["accident-repairs"],
   },
   {
     slug: "tire-chain",
@@ -71,7 +167,19 @@ export const fallbackServices: Service[] = [
     num: "08",
     title: "Tire & Chain",
     icon: "disc",
-    description: "Pirelli, Michelin and Metzeler fitment with proper balancing. DID and EK chain replacement with sprocket service.",
+    description:
+      "Pirelli, Michelin and Metzeler fitment with proper balancing. DID and EK chain replacement with sprocket service.",
+    headline: "Fitted properly.\nBalanced properly.",
+    intro:
+      "Pirelli, Michelin and Metzeler fitment on motorcycle-specific equipment, dynamically balanced every time \u2014 not \u201Cclose enough\u201D. DID and EK chains supplied and fitted as a matched set with their sprockets, never on their own.",
+    includes: [
+      "Tire fitment & dynamic balancing",
+      "Pressure & wear assessment",
+      "DID & EK chain replacement",
+      "Matched sprocket sets & alignment",
+    ],
+    image: "/img/d-tracker-orange.jpg",
+    body: serviceBodies["tire-chain"],
   },
 ];
 

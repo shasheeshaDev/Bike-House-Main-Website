@@ -66,8 +66,12 @@ for (const service of fallbackServices) {
     order: service.order,
     icon: service.icon,
     description: service.description,
+    ...(service.headline ? { headline: service.headline } : {}),
     ...(service.intro ? { intro: service.intro } : {}),
+    ...(service.body ? { body: service.body.map(block) } : {}),
     ...(service.includes ? { includes: service.includes } : {}),
+    ...(service.image ? { image: imageRef(service.image) } : {}),
+    ...(service.readout ? { readout: service.readout } : {}),
   });
 }
 

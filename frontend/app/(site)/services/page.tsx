@@ -4,6 +4,7 @@ import JsonLd from "@/components/json-ld";
 import PageHero from "@/components/page-hero";
 import SectionHead from "@/components/section-head";
 import ServiceCard from "@/components/service-card";
+import ServiceDetail from "@/components/service-detail";
 import { getServices } from "@/lib/data";
 import { pageMetadata, serviceSchema } from "@/lib/seo";
 import { site } from "@/lib/site";
@@ -48,6 +49,10 @@ export default async function ServicesPage() {
           </div>
         </div>
       </section>
+
+      {services.map((service, i) => (
+        <ServiceDetail key={service.slug} service={service} index={i} />
+      ))}
 
       <section className="section section-alt">
         <div className="container">

@@ -57,3 +57,51 @@ export const postBodies: Record<string, string[]> = {
     "Six: Bandaragama → Horana → Kalutara → Beruwala (coastal). The reward run. Beach views, breakfast at Hikkaduwa, the WR loves it.",
   ],
 };
+
+/**
+ * Long-form copy for each service's own page. The /services detail bands show
+ * `intro` + `includes`; these paragraphs are the depth behind them, so the two
+ * URLs are not serving the same text.
+ */
+export const serviceBodies: Record<string, string[]> = {
+  "engine-repairs": [
+    "An engine rarely fails without warning. Oil consumption creeps up, a cold start takes a second longer, compression drops a few percent across a season. By the time a rider notices real power loss, the cause is usually months old.",
+    "We start every engine job with a compression and leak-down test, because those two numbers tell us whether we are looking at rings, valves or a head gasket before anything is disassembled. Guessing at that stage is how workshops end up quoting for a top-end and then discovering a scored bore.",
+    "Rebuilds are done to factory clearances with a bore gauge and a micrometer, not by feel. Cylinders are honed to the correct crosshatch, valves are lapped and seated, and every rebuild gets a supervised run-in on the dyno before the bike goes back to its owner.",
+  ],
+  "performance-tuning": [
+    "Most bolt-on power claims do not survive contact with a dyno. A slip-on that gains four horsepower on a European test bench can lose torque everywhere below 6,000 rpm on a bike running Sri Lankan fuel in Colombo humidity.",
+    "That is why every map we write starts with a baseline pull and ends with an after pull, on the same bike, the same day. You see both graphs. If a modification did not help, we tell you and we take it off.",
+    "For most road bikes the honest answer is a well-matched exhaust, a clean intake and a properly resolved fuel table — not a big-bore kit. Ridden power comes from the mid-range, and the mid-range is where a careful map earns its money.",
+  ],
+  "ecu-diagnostics": [
+    "A modern superbike carries well over a hundred sensors, each reporting many times a second. When a rider says the bike feels wrong, the ECU has usually been recording the reason for weeks.",
+    "We run dealer-level software rather than a generic dongle, because the depth is entirely different. Consumer scanners read current fault codes. Dealer tools read stored history, learned fuel trims, throttle adaptation values and freeze-frame data from the moment a fault occurred.",
+    "That difference is what turns a guessed component swap into a diagnosis. We have traced intermittent faults to a corroded connector on bikes that had already been quoted for a replacement ECU. Reading the data properly is almost always cheaper than replacing parts hopefully.",
+  ],
+  "suspension-brakes": [
+    "Suspension is the single most under-served part of most road bikes. Manufacturers spring and valve for an average rider on smooth tarmac, then ship the same setup worldwide.",
+    "Setting sag correctly for your weight, in your riding gear, changes how a bike steers more than any other free adjustment. It is the first thing we measure and the last thing we check before handover.",
+    "Beyond setup, fork oil degrades and shock nitrogen leaks. A fork rebuild at the right interval restores damping that owners often assume was simply how the bike always felt. Brakes get the same treatment: fluid flushed, calipers stripped, pistons cleaned and seals replaced.",
+  ],
+  "custom-modifications": [
+    "The difference between a clean build and an obvious one is almost always the brackets. Fabricating in-house means a mount is made to fit the bike rather than the bike being modified to accept a generic part.",
+    "We take on conversions that change a bike's character — supermoto wheel and geometry packages, café racer subframes, full custom exhaust systems — and we plan the geometry consequences before cutting anything.",
+    "Every build is documented as it goes, and anything that affects handling, lighting or braking is checked and road-tested before the bike is handed back. A custom bike still has to be a safe one.",
+  ],
+  "oil-maintenance": [
+    "Scheduled maintenance is the least glamorous work in the workshop and the reason most of our long-term customers never need the expensive work.",
+    "We supply genuine Motul, Castrol and Mobil 1 to the grade the manufacturer specifies, and the invoice names the product and quantity used. Counterfeit oil is a real problem in this market, and the only defence is a supply chain you can point at.",
+    "Every service is logged against your bike: what was replaced, at what mileage, and what we noticed while we were in there. When you come to sell, that history is worth more than any amount of polish.",
+  ],
+  "accident-repairs": [
+    "After a crash, the visible damage is the easy part. What matters is whether the frame, forks and wheels are still true, because a bike that tracks incorrectly is dangerous long after the fairings look new.",
+    "We measure alignment against factory figures before quoting any cosmetic work. If the frame is beyond safe correction we will say so, even when that is not the answer anyone wants.",
+    "Repairs are photographed at every stage and parts are itemised individually, which is what insurers need in order to process a claim without repeated queries. The bike gets a full geometry and safety inspection before it is released.",
+  ],
+  "tire-chain": [
+    "Tire fitting is where corner-cutting is easiest to hide and most expensive to discover. A tire mounted on car equipment can be damaged internally in ways that only show up under load.",
+    "We fit on motorcycle-specific equipment and dynamically balance every wheel. An unbalanced front tire is felt as a weave at speed that riders often misdiagnose as a steering head or suspension fault.",
+    "Chains and sprockets wear as a set. Fitting a new chain to worn sprockets destroys the chain quickly, so we replace them together and set slack and alignment to specification rather than by eye.",
+  ],
+};

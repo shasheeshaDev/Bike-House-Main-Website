@@ -87,8 +87,11 @@ export const servicesQuery = defineQuery(`
     title,
     icon,
     description,
+    headline,
     intro,
     body,
-    includes
+    includes,
+    "image": image.asset->url,
+    readout
   }
 `);
