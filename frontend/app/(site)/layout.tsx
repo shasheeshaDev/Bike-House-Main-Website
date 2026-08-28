@@ -2,6 +2,7 @@ import SiteFooter from "@/components/site-footer";
 import SiteHeader from "@/components/site-header";
 import Preloader from "@/components/preloader";
 import Motion from "@/components/motion";
+import MobileTabBar from "@/components/mobile-tab-bar";
 import JsonLd from "@/components/json-ld";
 import { getServices } from "@/lib/data";
 import { organizationSchema, websiteSchema } from "@/lib/seo";
@@ -24,6 +25,7 @@ export default async function SiteLayout({
       <SiteHeader />
       <main>{children}</main>
       <SiteFooter />
+      <MobileTabBar />
     </>
   );
 }

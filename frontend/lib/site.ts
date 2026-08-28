@@ -22,9 +22,10 @@ export const site = {
     country: "LK",
   },
 
-  phone: "+94 77 123 4567",
-  phoneHref: "tel:+94771234567",
-  whatsapp: "https://wa.me/94771234567",
+  phone: "+94 75 882 3884",
+  phoneHref: "tel:+94758823884",
+  /** Same line as `phone` — the workshop number is WhatsApp-enabled. */
+  whatsapp: "https://wa.me/94758823884",
   email: "hello@bikehouse.lk",
   emailHref: "mailto:hello@bikehouse.lk",
 
@@ -51,10 +52,15 @@ export const site = {
     label: "Bike House · No. 42, Horana Road, Piliyandala",
   },
 
+  /**
+   * Only confirmed profiles belong here: these feed the footer *and* the
+   * `sameAs` array in JSON-LD, where a URL that 404s is a false identity claim
+   * to search and answer engines. Instagram and YouTube were placeholders
+   * carried over from the design and have been removed until real handles are
+   * supplied — add them back as extra keys and the footer picks them up.
+   */
   social: {
-    instagram: "https://instagram.com/bikehouse.lk",
-    facebook: "https://facebook.com/bikehouse.lk",
-    youtube: "https://youtube.com/@bikehouselk",
+    facebook: "https://www.facebook.com/www.bikehouse.lk/",
   },
 
   /** Marques the workshop is equipped for. Feeds the marquee and JSON-LD. */

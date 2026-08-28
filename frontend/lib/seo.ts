@@ -105,7 +105,9 @@ export function organizationSchema(serviceNames: string[]) {
       longitude: site.map.lng,
     },
     hasMap: `https://www.google.com/maps/search/?api=1&query=${site.map.lat},${site.map.lng}`,
-    sameAs: [site.social.instagram, site.social.facebook, site.social.youtube],
+    // Only confirmed profiles — a sameAs pointing at a URL that does not exist
+    // is a false identity claim to search and answer engines.
+    sameAs: Object.values(site.social).filter(Boolean),
     areaServed: [
       { "@type": "City", name: "Colombo" },
       { "@type": "City", name: "Piliyandala" },

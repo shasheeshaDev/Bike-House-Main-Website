@@ -113,6 +113,9 @@
      Lenis takes over only once it boots (see below). */
   html { scroll-behavior: smooth; }
 
+  /* Height reserved at the bottom of the page for the mobile tab bar. */
+  :root { --tabbar-h: 78px; }
+
   /* ── Lenis smooth scroll ──────────────────────────────────────────────────
      Lenis stamps `lenis` on <html> once it initialises, so every rule here is
      inert until the runtime actually loads.
@@ -442,71 +445,77 @@
   }
   .nav-phone svg { width: 14px; height: 14px; color: var(--red); }
 
-  .nav-burger {
+  /* Compact call button — replaces the phone number below 1080px, and the
+     burger that used to sit in this slot. */
+  .nav-call {
     display: none;
     background: transparent;
     border: 1px solid var(--line);
+    color: var(--ink);
     width: 44px; height: 44px;
     align-items: center;
     justify-content: center;
     padding: 0;
     border-radius: var(--radius);
+    transition: color .25s var(--ease), border-color .25s var(--ease);
   }
-  .nav-burger span {
-    width: 18px; height: 1px;
-    background: var(--ink);
-    position: relative;
-  }
-  .nav-burger span::before,
-  .nav-burger span::after {
-    content: ""; position: absolute; left: 0; width: 18px; height: 1px; background: var(--ink);
-  }
-  .nav-burger span::before { top: -6px; }
-  .nav-burger span::after { top: 6px; }
+  .nav-call:hover { color: var(--red); border-color: var(--red); }
+  .nav-call svg { color: var(--red); }
 
   @media (max-width: 1080px) {
     .nav-links, .nav-phone { display: none; }
-    .nav-burger { display: inline-flex; }
+    .nav-call { display: inline-flex; }
   }
 
-  .mobile-menu {
+  /* ── Mobile tab bar ───────────────────────────────────────────────────────
+     Below 1080px navigation moves to a fixed bottom bar instead of a burger
+     and a full-screen overlay: it is visible without a tap, needs no
+     open/closed state, traps no focus and never locks body scroll. */
+  .tabbar {
+    display: none;
     position: fixed;
-    inset: 0;
-    background: var(--bg);
-    z-index: 200;
-    padding: 100px var(--gutter) 40px;
-    transform: translateY(-100%);
-    transition: transform .5s var(--ease-out);
-    display: none;          /* default hidden everywhere */
+    bottom: 0; left: 0; right: 0;
+    z-index: 120;
+    align-items: stretch;
+    /* Near-opaque rather than glassy. The hero stats sit directly behind the
+       bar, and against a near-black ground even 7% bleed-through stays legible
+       enough to ghost the tab labels. Navigation legibility beats the
+       material — and this way the bar reads correctly even where the blur
+       below does not apply (Lightning CSS emits only the -webkit- form, which
+       Firefox does not support). */
+    background: rgba(8,8,9,.985);
+    backdrop-filter: blur(26px) saturate(160%);
+    -webkit-backdrop-filter: blur(26px) saturate(160%);
+    border-top: 1px solid var(--line-soft);
+    /* Clears the iOS home indicator without guessing a fixed value. */
+    padding: 0 4px env(safe-area-inset-bottom, 0px);
+  }
+  .tabbar-tab {
+    flex: 1;
+    display: flex;
     flex-direction: column;
-    gap: 8px;
-    visibility: hidden;
-  }
-  @media (max-width: 1080px) {
-    .mobile-menu { display: flex; visibility: visible; }
-  }
-  .mobile-menu.open { transform: translateY(0); }
-  .mobile-menu a {
-    font-family: var(--font-display);
-    font-size: clamp(42px, 9vw, 72px);
-    text-transform: uppercase;
-    letter-spacing: .01em;
-    padding: 10px 0;
-    border-bottom: 1px solid var(--line-soft);
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    /* 56px keeps every tap target above the 44px minimum. */
+    min-height: 56px;
+    padding: 8px 4px;
     color: var(--ink-dim);
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    transition: color .2s var(--ease);
   }
-  .mobile-menu a:hover, .mobile-menu a.active { color: var(--red); }
-  .mobile-menu .mobile-close {
-    position: absolute;
-    top: 24px; right: var(--gutter);
-    background: transparent;
-    border: 1px solid var(--line);
-    color: var(--ink);
-    width: 44px; height: 44px;
-    border-radius: var(--radius);
-  }
+  .tabbar-tab:active { opacity: .55; }
+  .tabbar-tab[aria-current="page"] { color: var(--red); }
+  .tabbar-tab svg { display: block; }
 
-  body.menu-open { overflow: hidden; }
+  @media (max-width: 1080px) {
+    .tabbar { display: flex; }
+    /* Keeps the footer from being trapped under the fixed bar. */
+    body { padding-bottom: var(--tabbar-h); }
+  }
 
   /* ---------- Footer ---------- */
   .site-footer {
@@ -2099,15 +2108,6 @@
   /* ── Map ────────────────────────────────────────────────────────────────── */
   .map-frame iframe { width: 100%; height: 100%; border: 0; filter: saturate(.7) contrast(1.1); }
 
-  /* ── Header burger (design uses ::before/::after bars) ──────────────────── */
-  .nav-burger span.is-open { background: transparent; }
-  .nav-burger span.is-open::before { top: 0; transform: rotate(45deg); }
-  .nav-burger span.is-open::after { top: 0; transform: rotate(-45deg); }
-  .nav-burger span::before, .nav-burger span::after { transition: transform .3s var(--ease), top .3s var(--ease); }
-  .mobile-phone {
-    margin-top: 32px; font-family: var(--font-display); font-size: 24px;
-    color: var(--red); letter-spacing: .04em; border: 0;
-  }
   .contact-grid { align-items: start; }
 
 

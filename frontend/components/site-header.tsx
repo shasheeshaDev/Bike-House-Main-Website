@@ -7,11 +7,19 @@ import { usePathname } from "next/navigation";
 import Icon from "./icon";
 import { navItems, site } from "@/lib/site";
 
-/** Fixed, blur-backed header with a full-screen mobile menu. */
+/**
+ * Fixed, blur-backed header.
+ *
+ * Below 1080px the nav is handed to the bottom tab bar (components/
+ * mobile-tab-bar.tsx) rather than a burger and a full-screen overlay, so there
+ * is no open/closed state here at all — no focus trap to manage, no body
+ * scroll to lock, and navigation stays visible instead of costing a tap to
+ * discover. What the header keeps at that size is the call button, which is
+ * the single highest-value action for a workshop on a phone.
+ */
 export default function SiteHeader() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -20,101 +28,54 @@ export default function SiteHeader() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  useEffect(() => {
-    document.body.style.overflow = menuOpen ? "hidden" : "";
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [menuOpen]);
-
-  // Close on navigation. Adjusted during render rather than in an effect so
-  // back/forward navigation never flashes the open menu.
-  const [menuPath, setMenuPath] = useState(pathname);
-  if (menuPath !== pathname) {
-    setMenuPath(pathname);
-    setMenuOpen(false);
-  }
-
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname.startsWith(href);
 
   return (
-    <>
-      <header className={`site-header${scrolled ? " is-scrolled" : ""}`}>
-        <div className="container nav">
-          <Link href="/" className="nav-brand" aria-label={`${site.name} home`}>
-            <Image src="/img/logo.png" alt="" width={38} height={38} priority />
-            <span className="nav-brand-text">
-              {site.name.toUpperCase()}
-              <small>{site.brandLine.toUpperCase()}</small>
-            </span>
+    <header className={`site-header${scrolled ? " is-scrolled" : ""}`}>
+      <div className="container nav">
+        <Link href="/" className="nav-brand" aria-label={`${site.name} home`}>
+          <Image src="/img/logo.png" alt="" width={38} height={38} priority />
+          <span className="nav-brand-text">
+            {site.name.toUpperCase()}
+            <small>{site.brandLine.toUpperCase()}</small>
+          </span>
+        </Link>
+
+        <nav aria-label="Main">
+          <ul className="nav-links">
+            {navItems.map((item) => (
+              <li key={item.id}>
+                <Link
+                  href={item.href}
+                  className={isActive(item.href) ? "active" : undefined}
+                  aria-current={isActive(item.href) ? "page" : undefined}
+                >
+                  {item.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
+        <div className="nav-cta">
+          <a href={site.phoneHref} className="nav-phone">
+            <Icon name="phone" className="size-3.5" strokeWidth={2} />
+            {site.phone}
+          </a>
+          <Link href="/contact" className="btn btn-small">
+            Book a Service <span className="arrow" />
           </Link>
-
-          <nav aria-label="Main">
-            <ul className="nav-links">
-              {navItems.map((item) => (
-                <li key={item.id}>
-                  <Link
-                    href={item.href}
-                    className={isActive(item.href) ? "active" : undefined}
-                    aria-current={isActive(item.href) ? "page" : undefined}
-                  >
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-
-          <div className="nav-cta">
-            <a href={site.phoneHref} className="nav-phone">
-              <Icon name="phone" className="size-3.5" strokeWidth={2} />
-              {site.phone}
-            </a>
-            <Link href="/contact" className="btn btn-small">
-              Book a Service <span className="arrow" />
-            </Link>
-            <button
-              type="button"
-              className="nav-burger"
-              onClick={() => setMenuOpen((v) => !v)}
-              aria-label={menuOpen ? "Close menu" : "Open menu"}
-              aria-expanded={menuOpen}
-              aria-controls="mobile-menu"
-            >
-              <span className={menuOpen ? "is-open" : undefined} />
-            </button>
-          </div>
-        </div>
-      </header>
-
-      <div
-        id="mobile-menu"
-        className={`mobile-menu${menuOpen ? " open" : ""}`}
-        aria-hidden={!menuOpen}
-      >
-        <button
-          type="button"
-          className="mobile-close"
-          onClick={() => setMenuOpen(false)}
-          aria-label="Close menu"
-        >
-          ×
-        </button>
-        {navItems.map((item) => (
-          <Link
-            key={item.id}
-            href={item.href}
-            className={isActive(item.href) ? "active" : undefined}
-            onClick={() => setMenuOpen(false)}
+          {/* The compact stand-in for the number once .nav-phone is hidden. */}
+          <a
+            href={site.phoneHref}
+            className="nav-call"
+            aria-label={`Call ${site.name} on ${site.phone}`}
           >
-            {item.label}
-          </Link>
-        ))}
-        <a href={site.phoneHref} className="mobile-phone">
-          {site.phone}
-        </a>
+            <Icon name="phone" className="size-4" strokeWidth={2} />
+          </a>
+        </div>
       </div>
-    </>
+    </header>
   );
 }

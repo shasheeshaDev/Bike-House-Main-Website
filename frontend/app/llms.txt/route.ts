@@ -41,6 +41,7 @@ ${site.name} is an independent motorcycle workshop and dealership in ${site.addr
 - Phone: ${site.phone}
 - WhatsApp: ${site.whatsapp}
 - Email: ${site.email}
+- Facebook: ${site.social.facebook}
 - Opening hours: ${site.hours[0]}, ${site.hours[1]}. Closed Sunday.
 - Currency: ${site.currency}
 - Website: ${abs("/")}

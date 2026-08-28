@@ -27,6 +27,8 @@ export default async function ContactPage() {
     { icon: "mail", label: "Email", value: site.email, note: "For larger inquiries, sponsorship, fleet contracts.", href: site.emailHref },
     { icon: "pin", label: "Workshop Address", value: site.address.plain, note: "Free parking. Bring your bike — we'll come out." },
     { icon: "clock", label: "Opening Hours", value: `${site.hours[0]} · ${site.hours[1]}`, note: "Closed Sundays. Public holidays vary — call ahead." },
+    // Display derived from the URL so the two can never drift apart.
+    { icon: "facebook", label: "Facebook", value: site.social.facebook.replace(/^https:\/\/(www\.)?/, "").replace(/\/$/, ""), note: "Workshop updates, recent builds and bikes as they land.", href: site.social.facebook },
   ];
 
   return (
