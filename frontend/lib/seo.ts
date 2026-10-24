@@ -121,6 +121,15 @@ export function organizationSchema(serviceNames: string[]) {
         opens: site.opens,
         closes: site.closes,
       },
+      // schema.org marks a closed day with an equal opens/closes pair. Stating
+      // it explicitly is what stops a consumer inferring "hours unknown" for
+      // Monday and showing the workshop as possibly open.
+      {
+        "@type": "OpeningHoursSpecification",
+        dayOfWeek: site.closedDays,
+        opens: "00:00",
+        closes: "00:00",
+      },
     ],
   };
 }

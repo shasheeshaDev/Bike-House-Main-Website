@@ -29,9 +29,12 @@ const {
 
 const outDir = join(root, "..", "studio");
 const imgDir = join(outDir, "images");
+const fileDir = join(outDir, "files");
 mkdirSync(imgDir, { recursive: true });
+mkdirSync(fileDir, { recursive: true });
 
 const usedImages = new Set();
+const usedFiles = new Set();
 
 /** Copies the public asset next to the ndjson and returns a _sanityAsset ref. */
 function imageRef(publicPath) {
@@ -41,6 +44,32 @@ function imageRef(publicPath) {
     usedImages.add(file);
   }
   return { _type: "image", _sanityAsset: `image@file://./images/${file}` };
+}
+
+/** As imageRef, but for the `file` assets behind background videos. */
+function fileRef(publicPath) {
+  const file = basename(publicPath);
+  if (!usedFiles.has(file)) {
+    copyFileSync(join(root, "public", publicPath), join(fileDir, file));
+    usedFiles.add(file);
+  }
+  return { _type: "file", _sanityAsset: `file@file://./files/${file}` };
+}
+
+/** The service card's background object, matching the service schema. */
+function backgroundRef(background) {
+  if (!background) return undefined;
+  if (background.kind === "video") {
+    if (!background.video) return undefined;
+    return {
+      _type: "object",
+      kind: "video",
+      video: fileRef(background.video),
+      ...(background.image ? { poster: imageRef(background.image) } : {}),
+    };
+  }
+  if (!background.image) return undefined;
+  return { _type: "object", kind: "image", image: imageRef(background.image) };
 }
 
 const slug = (current) => ({ _type: "slug", current });
@@ -72,6 +101,9 @@ for (const service of fallbackServices) {
     ...(service.includes ? { includes: service.includes } : {}),
     ...(service.image ? { image: imageRef(service.image) } : {}),
     ...(service.readout ? { readout: service.readout } : {}),
+    ...(backgroundRef(service.background)
+      ? { background: backgroundRef(service.background) }
+      : {}),
   });
 }
 
@@ -158,6 +190,10 @@ for (const item of fallbackTestimonials) {
     ...(item.rating ? { rating: item.rating } : {}),
     order: item.order,
     ...(item.featured ? { featured: true } : {}),
+    source: item.source ?? "manual",
+    ...(item.publishedAt ? { publishedAt: item.publishedAt } : {}),
+    ...(item.authorPhoto ? { authorPhoto: item.authorPhoto } : {}),
+    ...(item.reviewUrl ? { reviewUrl: item.reviewUrl } : {}),
   });
 }
 
@@ -176,3 +212,6 @@ for (const [type, n] of Object.entries(counts).sort()) {
   console.log(`  ${String(n).padStart(3)}  ${type}`);
 }
 console.log(`  ${String(usedImages.size).padStart(3)}  images → studio/images/`);
+if (usedFiles.size) {
+  console.log(`  ${String(usedFiles.size).padStart(3)}  files  → studio/files/`);
+}

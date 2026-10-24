@@ -75,10 +75,21 @@ export const testimonialsQuery = defineQuery(`
     role,
     quote,
     rating,
-    featured
+    featured,
+    source,
+    publishedAt,
+    authorPhoto,
+    reviewUrl
   }
 `);
 
+/**
+ * The `background` projection flattens the schema's object into the
+ * ServiceBackground shape the fallback bundle also returns: a single `image`
+ * key, filled from either the image field or the video's poster, so the card
+ * never has to know which branch produced it. A service with no background
+ * projects to null, which the card reads as "no media".
+ */
 export const servicesQuery = defineQuery(`
   *[_type == "service" && defined(slug.current)] | order(order asc) {
     "slug": slug.current,
@@ -92,6 +103,11 @@ export const servicesQuery = defineQuery(`
     body,
     includes,
     "image": image.asset->url,
-    readout
+    readout,
+    "background": background{
+      kind,
+      "image": coalesce(image.asset->url, poster.asset->url),
+      "video": video.asset->url
+    }
   }
 `);

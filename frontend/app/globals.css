@@ -907,6 +907,76 @@
   .service-card:hover .more { color: var(--red); }
   .service-card:hover .more::after { transform: translateX(4px); }
 
+  /* ---------- Service card background media ----------
+     An optional image or video behind the card. The scrim carries almost all
+     of the contrast at rest, so the card reads as the flat panel the design
+     specifies; on hover — or, on touch, when the card crosses the activation
+     line — it lifts to .42 and the media comes through. The gradient underneath
+     never fades, which is what keeps the title and copy legible in both states.
+
+     Activation is set by components/service-card-media.tsx as `data-active`;
+     `:hover` is listed alongside it so the image case works before hydration. */
+  .service-card .service-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+    background: var(--bg);
+  }
+  .service-card .service-bg :is(img, video) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+  /* Scrim — the layer that animates. */
+  .service-card .service-bg::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--bg);
+    opacity: .88;
+    transition: opacity .5s var(--ease);
+  }
+  /* Legibility gradient — constant, so text never rides bare media. Weighted
+     to the lower half, where the title, copy and link sit. */
+  .service-card .service-bg::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(180deg, rgba(10,10,11,.55) 0%, rgba(10,10,11,.26) 28%, rgba(10,10,11,.74) 66%, rgba(10,10,11,.92) 100%);
+  }
+  .service-card[data-bg]:hover .service-bg::after,
+  .service-card[data-bg][data-active="true"] .service-bg::after { opacity: .42; }
+  /* The reveal itself is information, so it is kept — only the fade is dropped.
+     Video playback is suppressed in the component, not here. */
+  @media (prefers-reduced-motion: reduce) {
+    .service-card .service-bg::after { transition: none; }
+  }
+
+  /* Absolutely positioned, so it takes no part in the card's column flex and
+     the existing 16px gap between content rows is unchanged. Only the content
+     is lifted above it. */
+  .service-card[data-bg] > *:not(.service-bg) { position: relative; z-index: 1; }
+  /* The flat hover tint would otherwise sit in front of the media. */
+  .service-card[data-bg]:hover { background: var(--bg); }
+
+  /* Contrast in the revealed state. The muted greys the flat card uses are
+     tuned against near-black; over a lit photo or video frame they fall below
+     a comfortable ratio, so the two quietest elements step up one stop and
+     everything gains a shadow. Size, family and weight are untouched — the
+     card's typography is the design's, not this feature's. */
+  .service-card[data-bg] :is(.num, h3, p, .more) {
+    text-shadow: 0 1px 14px rgba(10,10,11,.6);
+  }
+  .service-card[data-bg]:hover :is(.num, p),
+  .service-card[data-bg][data-active="true"] :is(.num, p) {
+    color: var(--ink-dim);
+  }
+
   /* ---------- Bike cards ---------- */
   .bike-grid {
     display: grid;
@@ -1298,6 +1368,20 @@
   .testimonial .name { font-family: var(--font-condensed); font-weight: 600; letter-spacing: .05em; text-transform: uppercase; font-size: 14px; color: var(--ink); }
   .testimonial .role { font-family: var(--font-mono); font-size: 11px; color: var(--ink-mute); letter-spacing: .12em; text-transform: uppercase; }
   .testimonial .stars { color: var(--red); letter-spacing: 2px; font-size: 12px; }
+  /* Google reviews run to whatever length the reviewer felt like, and three
+     cards in a row have to end level. The quote is clamped visually only —
+     the full text stays in the DOM, so it is still copied and read out whole. */
+  .testimonial .quote {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 9;
+    overflow: hidden;
+  }
+  /* The reviewer's own picture, in place of the initial tile. */
+  .testimonial img.avatar { object-fit: cover; }
+  .testimonial .role.src { margin-top: 3px; }
+  .testimonial .role.src a { color: var(--ink-mute); border-bottom: 1px solid var(--line); }
+  .testimonial .role.src a:hover { color: var(--red); border-color: var(--red); }
 
   /* ---------- Blog ---------- */
   .blog-feature {

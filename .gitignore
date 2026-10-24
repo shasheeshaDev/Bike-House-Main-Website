@@ -11,4 +11,5 @@ dist/
 .vercel
 .sanity/
 studio/images/
+studio/files/
 studio/seed.ndjson

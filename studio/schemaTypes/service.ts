@@ -46,6 +46,7 @@ export const service = defineType({
           { title: "Droplet (oil)", value: "droplet" },
           { title: "Alert (accident)", value: "alert" },
           { title: "Disc (tire & chain)", value: "disc" },
+          { title: "Bolt (electrical)", value: "bolt" },
         ],
       },
       initialValue: "wrench",
@@ -57,6 +58,72 @@ export const service = defineType({
       rows: 3,
       description: "Card copy on the services grid.",
       validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "background",
+      title: "Card Background",
+      type: "object",
+      description:
+        "Optional image or video behind the card on the services grid. Dimmed by " +
+        "an overlay at rest; the overlay lifts on hover (desktop) or when the " +
+        "card scrolls into view (mobile), and a video plays only while active.",
+      options: { collapsible: true, collapsed: true },
+      fields: [
+        defineField({
+          name: "kind",
+          title: "Media Type",
+          type: "string",
+          options: {
+            list: [
+              { title: "Image", value: "image" },
+              { title: "Video", value: "video" },
+            ],
+            layout: "radio",
+          },
+          initialValue: "image",
+          validation: (Rule) => Rule.required(),
+        }),
+        defineField({
+          name: "image",
+          title: "Background Image",
+          type: "image",
+          options: { hotspot: true },
+          description: "Rendered with object-fit: cover, so favour a landscape crop.",
+          hidden: ({ parent }) => parent?.kind !== "image",
+        }),
+        defineField({
+          name: "video",
+          title: "Background Video",
+          type: "file",
+          options: { accept: "video/mp4,video/webm" },
+          description:
+            "Keep it short, silent and small — a few seconds, under ~2 MB. It is " +
+            "muted and looped, and only loads its metadata until the card is active.",
+          hidden: ({ parent }) => parent?.kind !== "video",
+        }),
+        defineField({
+          name: "poster",
+          title: "Video Poster",
+          type: "image",
+          options: { hotspot: true },
+          description:
+            "Frame shown while the video is paused. Without one the card shows the " +
+            "first decodable frame, which browsers render inconsistently.",
+          hidden: ({ parent }) => parent?.kind !== "video",
+        }),
+      ],
+      // The chosen type has to carry its asset, or the card renders an empty
+      // overlay — the same "a field added here must exist everywhere" rule the
+      // fallback contract applies to the data shape.
+      validation: (Rule) =>
+        Rule.custom((value) => {
+          if (!value) return true;
+          const bg = value as { kind?: string; image?: unknown; video?: unknown };
+          if (!bg.kind) return true;
+          if (bg.kind === "image" && !bg.image) return "Add a background image, or clear the media type.";
+          if (bg.kind === "video" && !bg.video) return "Add a background video, or clear the media type.";
+          return true;
+        }),
     }),
     defineField({
       name: "headline",
