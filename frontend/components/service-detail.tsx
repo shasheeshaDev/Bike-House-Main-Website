@@ -12,7 +12,7 @@ import type { Service } from "@/lib/types";
  * CMS returns.
  *
  * The visual is, in order of preference: a photo, the monospace scan-tool
- * readout the design gives ECU Diagnostics, or the service's own line icon —
+ * readout the design gives the diagnostics line, or the service's own line icon —
  * so a service added in the Studio with neither still renders a complete band.
  */
 export default function ServiceDetail({

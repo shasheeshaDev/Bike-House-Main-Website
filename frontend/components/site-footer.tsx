@@ -91,6 +91,7 @@ export default function SiteFooter() {
                 <a href={site.emailHref}>{site.email}</a>
               </li>
               <li>{site.hoursLine}</li>
+              <li>{site.closedLine}</li>
             </ul>
           </div>
         </div>

@@ -27,6 +27,7 @@ export const fallbackServices: Service[] = [
       "Gasket & seal replacement",
     ],
     image: "/img/diagnostic-work.jpg",
+    background: { kind: "image", image: "/img/diagnostic-work.jpg" },
     body: serviceBodies["engine-repairs"],
   },
   {
@@ -47,13 +48,18 @@ export const fallbackServices: Service[] = [
       "Air filter & intake matching",
     ],
     image: "/img/cbr1000rr-front.jpg",
+    background: {
+      kind: "video",
+      video: "/video/hero.mp4",
+      image: "/img/cbr1000rr-front.jpg",
+    },
     body: serviceBodies["performance-tuning"],
   },
   {
-    slug: "ecu-diagnostics",
+    slug: "carburetor-and-efi-works",
     order: 3,
     num: "03",
-    title: "ECU Diagnostics",
+    title: "Carburetor & EFI Works",
     icon: "cpu",
     description:
       "OBD-II and OEM-grade tools for BMW, Ducati, Yamaha, Honda, KTM and Kawasaki. Fault codes, live data, recalibration.",
@@ -79,7 +85,8 @@ export const fallbackServices: Service[] = [
       "> CLEAR_DTC \u2713",
       "> SAVE_LOG /bh/24-11-18",
     ],
-    body: serviceBodies["ecu-diagnostics"],
+    background: { kind: "image", image: "/img/blue-wr-twins.jpg" },
+    body: serviceBodies["carburetor-and-efi-works"],
   },
   {
     slug: "suspension-brakes",
@@ -99,6 +106,7 @@ export const fallbackServices: Service[] = [
       "Brake bleed, caliper & master-cylinder rebuild",
     ],
     image: "/img/silver-r1.jpg",
+    background: { kind: "image", image: "/img/silver-r1.jpg" },
     body: serviceBodies["suspension-brakes"],
   },
   {
@@ -119,13 +127,14 @@ export const fallbackServices: Service[] = [
       "Lighting, wiring & instrument swaps",
     ],
     image: "/img/red-supermoto.jpg",
+    background: { kind: "image", image: "/img/red-supermoto.jpg" },
     body: serviceBodies["custom-modifications"],
   },
   {
-    slug: "oil-maintenance",
+    slug: "services-and-maintenance",
     order: 6,
     num: "06",
-    title: "Oil & Maintenance",
+    title: "Services & Maintenance",
     icon: "droplet",
     description:
       "Genuine Motul, Castrol and Mobil1 oils. Filter changes, coolant flushes, full A-class service intervals.",
@@ -139,7 +148,8 @@ export const fallbackServices: Service[] = [
       "Full service-history logging",
     ],
     image: "/img/yellow-wr.jpg",
-    body: serviceBodies["oil-maintenance"],
+    background: { kind: "image", image: "/img/yellow-wr.jpg" },
+    body: serviceBodies["services-and-maintenance"],
   },
   {
     slug: "accident-repairs",
@@ -159,27 +169,28 @@ export const fallbackServices: Service[] = [
       "Post-repair geometry & safety inspection",
     ],
     image: "/img/ducati-hyper.jpg",
+    background: { kind: "image", image: "/img/ducati-hyper.jpg" },
     body: serviceBodies["accident-repairs"],
   },
   {
-    slug: "tire-chain",
+    slug: "electrical-repairs",
     order: 8,
     num: "08",
-    title: "Tire & Chain",
-    icon: "disc",
+    title: "Electrical Repairs",
+    icon: "bolt",
     description:
-      "Pirelli, Michelin and Metzeler fitment with proper balancing. DID and EK chain replacement with sprocket service.",
-    headline: "Fitted properly.\nBalanced properly.",
+      "Wiring and loom repairs, charging and starting faults, lighting and switchgear \u2014 traced to the cause rather than replaced on a guess.",
+    headline: "Traced to the fault.\nNot to the parts bin.",
     intro:
-      "Pirelli, Michelin and Metzeler fitment on motorcycle-specific equipment, dynamically balanced every time \u2014 not \u201Cclose enough\u201D. DID and EK chains supplied and fitted as a matched set with their sprockets, never on their own.",
+      "Charging-system and starting faults, loom and connector repairs, lighting, switchgear and accessory wiring. We measure voltage drop and charging output under load and follow the circuit to where the reading changes, so the part we replace is the one that actually failed.",
     includes: [
-      "Tire fitment & dynamic balancing",
-      "Pressure & wear assessment",
-      "DID & EK chain replacement",
-      "Matched sprocket sets & alignment",
+      "Wiring loom & connector repair",
+      "Charging system & battery testing",
+      "Starter, relay & fuse-box faults",
+      "Lighting, switchgear & accessory wiring",
     ],
-    image: "/img/d-tracker-orange.jpg",
-    body: serviceBodies["tire-chain"],
+    background: { kind: "image", image: "/img/d-tracker-blue.jpg" },
+    body: serviceBodies["electrical-repairs"],
   },
 ];
 
@@ -541,6 +552,7 @@ export const fallbackTestimonials: Testimonial[] = [
     quote: "I tried three workshops before this one. Bike House diagnosed an electronic gremlin in 40 minutes that two others couldn't find in three weeks. Honest, fast, properly equipped.",
     rating: 5,
     featured: true,
+    source: "manual",
   },
   {
     slug: "roshani-p",
@@ -550,6 +562,7 @@ export const fallbackTestimonials: Testimonial[] = [
     quote: "They tuned my MT-09 for our Nuwara Eliya runs and it transformed the bike. Throttle response is night-and-day. Got photos at every stage of the work.",
     rating: 5,
     featured: true,
+    source: "manual",
   },
   {
     slug: "asanka-f",
@@ -559,5 +572,6 @@ export const fallbackTestimonials: Testimonial[] = [
     quote: "The desmo service was less stressful here than the dealership. Real expertise, fair pricing, and they actually called me back about parts ETA. Five years a customer.",
     rating: 5,
     featured: true,
+    source: "manual",
   },
 ];

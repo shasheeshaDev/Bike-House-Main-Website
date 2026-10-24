@@ -3,9 +3,13 @@ import { site } from "./site";
 
 /**
  * Email delivery via Resend. Configure with:
- *   RESEND_API_KEY     — from resend.com/api-keys
- *   CONTACT_TO_EMAIL   — inbox that receives form submissions
- *                        (defaults to the workshop address in lib/site)
+ *   RESEND_API_KEY     — from resend.com/api-keys. Server-only: it is read
+ *                        here, inside a module that is never imported by a
+ *                        client component, and has no NEXT_PUBLIC_ prefix, so
+ *                        it is not inlined into the browser bundle.
+ *   CONTACT_TO_EMAIL   — inbox that receives every form submission
+ *                        (defaults to the workshop address in lib/site, which
+ *                        is chathurangasupun96@gmail.com)
  *   RESEND_FROM_EMAIL  — verified sender, e.g. "Bike House
  *                        <website@bikehouse.lk>". Until a domain is verified,
  *                        Resend only allows "onboarding@resend.dev" delivering

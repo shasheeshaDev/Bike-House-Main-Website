@@ -174,7 +174,7 @@ export default function AboutPage() {
       <CtaBanner
         kicker="Come say hello"
         heading={"Come walk through\nthe workshop."}
-        body="No appointment needed for a look around. Mon–Sat, 08:30–19:00. There's coffee and usually a project bike in pieces."
+        body={`No appointment needed for a look around. ${site.hoursSentence}. There's coffee and usually a project bike in pieces.`}
         actions={[
           { label: "Get Directions", href: "/contact" },
           { label: "Call Workshop", href: site.phoneHref, variant: "ghost", external: true },

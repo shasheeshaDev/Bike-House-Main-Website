@@ -105,6 +105,31 @@ export interface Testimonial {
   /** Out of 5. Omit to hide the stars. */
   rating?: number;
   featured?: boolean;
+  /**
+   * Where the words came from. "google" means the quote is a real review
+   * pulled from the workshop's Business Profile, so the card credits its
+   * author and links out to it; omitted means written in the Studio.
+   */
+  source?: "manual" | "google";
+  /** ISO timestamp the review was left. Only set on synced reviews. */
+  publishedAt?: string;
+  /** Reviewer's Google profile picture, shown in place of the initial. */
+  authorPhoto?: string;
+  /** Link to the review on Google, so a visitor can verify the quote. */
+  reviewUrl?: string;
+}
+
+/**
+ * Background media behind a service card on the grid. `kind` decides which
+ * asset the card renders, so a video missing its poster still falls back to the
+ * overlay alone rather than to the image branch.
+ */
+export interface ServiceBackground {
+  kind: "image" | "video";
+  /** The image itself, or a video's poster frame. */
+  image?: string;
+  /** Video file URL. Played only while the card is hovered or scrolled-to. */
+  video?: string;
 }
 
 export interface Service {
@@ -131,7 +156,9 @@ export interface Service {
   image?: string;
   /**
    * Monospace scan-tool readout rendered instead of a photo — the design gives
-   * ECU Diagnostics this treatment in place of an image.
+   * the diagnostics line this treatment in place of an image.
    */
   readout?: string[];
+  /** Optional image or video behind the card on the services grid. */
+  background?: ServiceBackground;
 }

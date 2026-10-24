@@ -1,8 +1,9 @@
 /**
  * Line icons used by the services grid, feature grid and info blocks.
  *
- * Hand-drawn rather than pulled from a library: the design uses eight bespoke
- * glyphs and shipping an icon package for them would cost more than the paths.
+ * Hand-drawn rather than pulled from a library: the design uses a small set of
+ * bespoke glyphs and shipping an icon package for them would cost more than the
+ * paths.
  */
 const paths: Record<string, React.ReactNode> = {
   cog: (
@@ -49,6 +50,11 @@ const paths: Record<string, React.ReactNode> = {
       <circle cx="12" cy="12" r="9" />
       <circle cx="12" cy="12" r="5" />
       <path d="M12 3v3M12 18v3M3 12h3M18 12h3" />
+    </>
+  ),
+  bolt: (
+    <>
+      <path d="M13 2L5 14h5l-1 8 8-12h-5l1-8Z" />
     </>
   ),
   check: (

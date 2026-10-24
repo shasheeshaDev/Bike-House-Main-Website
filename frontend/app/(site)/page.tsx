@@ -63,7 +63,7 @@ export default async function HomePage() {
 
         <div className="container hero-content">
           <div className="hero-badges">
-            <span className="chip chip-red chip-dot">Open Now · Mon–Sat 08:30</span>
+            <span className="chip chip-red chip-dot">{site.hoursLine}</span>
             <span className="eyebrow">Piliyandala / Sri Lanka</span>
           </div>
 

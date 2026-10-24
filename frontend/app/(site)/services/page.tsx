@@ -10,7 +10,7 @@ import { pageMetadata, serviceSchema } from "@/lib/seo";
 import { site } from "@/lib/site";
 
 const DESCRIPTION =
-  "Engine repairs, performance tuning, ECU diagnostics, suspension, custom modifications and accident repair for high-capacity motorcycles in Piliyandala.";
+  "Engine repairs, performance tuning, carburetor and EFI works, suspension, custom modifications, electrical and accident repair for high-capacity motorcycles in Piliyandala.";
 
 const PROCESS = [
   ["Drop-Off & Brief", "You describe symptoms. We ask questions. No assumptions."],

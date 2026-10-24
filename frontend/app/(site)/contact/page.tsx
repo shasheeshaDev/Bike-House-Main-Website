@@ -8,7 +8,7 @@ import { pageMetadata } from "@/lib/seo";
 import { mapEmbedUrl, site } from "@/lib/site";
 
 const DESCRIPTION =
-  "Book a service, ask about a bike, or find the workshop. No. 42 Horana Road, Piliyandala. Mon–Sat 08:30–19:00.";
+  `Book a service, ask about a bike, or find the workshop. No. 42 Horana Road, Piliyandala. ${site.hoursSentence}.`;
 
 export async function generateMetadata(_: unknown, parent: ResolvingMetadata): Promise<Metadata> {
   return pageMetadata(parent, {
@@ -22,11 +22,11 @@ export default async function ContactPage() {
   const services = await getServices();
 
   const blocks = [
-    { icon: "phone", label: "Workshop Phone", value: site.phone, note: "Fastest way to get a quote. Mon–Sat 08:30–19:00.", href: site.phoneHref },
+    { icon: "phone", label: "Workshop Phone", value: site.phone, note: `Fastest way to get a quote. ${site.hoursSentence}.`, href: site.phoneHref },
     { icon: "chat", label: "WhatsApp", value: site.phone, note: "Send photos of damage or part numbers. Replies within a few hours.", href: site.whatsapp },
     { icon: "mail", label: "Email", value: site.email, note: "For larger inquiries, sponsorship, fleet contracts.", href: site.emailHref },
     { icon: "pin", label: "Workshop Address", value: site.address.plain, note: "Free parking. Bring your bike — we'll come out." },
-    { icon: "clock", label: "Opening Hours", value: `${site.hours[0]} · ${site.hours[1]}`, note: "Closed Sundays. Public holidays vary — call ahead." },
+    { icon: "clock", label: "Opening Hours", value: `${site.hours[0]} · ${site.hours[1]}`, note: `${site.closedLine}. Public holidays vary — call ahead.` },
     // Display derived from the URL so the two can never drift apart.
     { icon: "facebook", label: "Facebook", value: site.social.facebook.replace(/^https:\/\/(www\.)?/, "").replace(/\/$/, ""), note: "Workshop updates, recent builds and bikes as they land.", href: site.social.facebook },
   ];

@@ -74,7 +74,7 @@ export const serviceBodies: Record<string, string[]> = {
     "That is why every map we write starts with a baseline pull and ends with an after pull, on the same bike, the same day. You see both graphs. If a modification did not help, we tell you and we take it off.",
     "For most road bikes the honest answer is a well-matched exhaust, a clean intake and a properly resolved fuel table — not a big-bore kit. Ridden power comes from the mid-range, and the mid-range is where a careful map earns its money.",
   ],
-  "ecu-diagnostics": [
+  "carburetor-and-efi-works": [
     "A modern superbike carries well over a hundred sensors, each reporting many times a second. When a rider says the bike feels wrong, the ECU has usually been recording the reason for weeks.",
     "We run dealer-level software rather than a generic dongle, because the depth is entirely different. Consumer scanners read current fault codes. Dealer tools read stored history, learned fuel trims, throttle adaptation values and freeze-frame data from the moment a fault occurred.",
     "That difference is what turns a guessed component swap into a diagnosis. We have traced intermittent faults to a corroded connector on bikes that had already been quoted for a replacement ECU. Reading the data properly is almost always cheaper than replacing parts hopefully.",
@@ -89,7 +89,7 @@ export const serviceBodies: Record<string, string[]> = {
     "We take on conversions that change a bike's character — supermoto wheel and geometry packages, café racer subframes, full custom exhaust systems — and we plan the geometry consequences before cutting anything.",
     "Every build is documented as it goes, and anything that affects handling, lighting or braking is checked and road-tested before the bike is handed back. A custom bike still has to be a safe one.",
   ],
-  "oil-maintenance": [
+  "services-and-maintenance": [
     "Scheduled maintenance is the least glamorous work in the workshop and the reason most of our long-term customers never need the expensive work.",
     "We supply genuine Motul, Castrol and Mobil 1 to the grade the manufacturer specifies, and the invoice names the product and quantity used. Counterfeit oil is a real problem in this market, and the only defence is a supply chain you can point at.",
     "Every service is logged against your bike: what was replaced, at what mileage, and what we noticed while we were in there. When you come to sell, that history is worth more than any amount of polish.",
@@ -99,9 +99,9 @@ export const serviceBodies: Record<string, string[]> = {
     "We measure alignment against factory figures before quoting any cosmetic work. If the frame is beyond safe correction we will say so, even when that is not the answer anyone wants.",
     "Repairs are photographed at every stage and parts are itemised individually, which is what insurers need in order to process a claim without repeated queries. The bike gets a full geometry and safety inspection before it is released.",
   ],
-  "tire-chain": [
-    "Tire fitting is where corner-cutting is easiest to hide and most expensive to discover. A tire mounted on car equipment can be damaged internally in ways that only show up under load.",
-    "We fit on motorcycle-specific equipment and dynamically balance every wheel. An unbalanced front tire is felt as a weave at speed that riders often misdiagnose as a steering head or suspension fault.",
-    "Chains and sprockets wear as a set. Fitting a new chain to worn sprockets destroys the chain quickly, so we replace them together and set slack and alignment to specification rather than by eye.",
+  "electrical-repairs": [
+    "Electrical faults are the ones most likely to be replaced rather than repaired. A bike that will not start gets a new battery, then a new starter relay, then a new regulator — and the original fault is still there.",
+    "We trace instead. Charging output and voltage drop measured under load, earth paths checked, connectors opened and inspected, and the wiring followed to the point where the reading changes. Corrosion and chafed insulation account for a large share of what we find.",
+    "Where a component genuinely has failed we replace it and then re-test the circuit it sits in, because a fried regulator or starter is usually a symptom. The repair is only finished when the readings are back inside specification.",
   ],
 };

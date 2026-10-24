@@ -26,21 +26,34 @@ export const site = {
   phoneHref: "tel:+94758823884",
   /** Same line as `phone` — the workshop number is WhatsApp-enabled. */
   whatsapp: "https://wa.me/94758823884",
-  email: "hello@bikehouse.lk",
-  emailHref: "mailto:hello@bikehouse.lk",
+  email: "chathurangasupun96@gmail.com",
+  emailHref: "mailto:chathurangasupun96@gmail.com",
 
-  /** Mon–Sat 08:30–19:00, closed Sunday. */
-  hours: ["Monday — Saturday", "08.30 — 19.00"],
-  hoursLine: "Mon–Sat · 08:30–19:00",
+  /**
+   * Tue–Sun 09:00–19:00, closed Monday.
+   *
+   * Every surface that shows hours reads from here — the footer, the contact
+   * blocks, the hero chip, the sidebar panels, llms.txt and the JSON-LD
+   * `openingHoursSpecification`. Nothing restates them as a literal, so a
+   * change to the roster lands everywhere at once.
+   */
+  hours: ["Tuesday — Sunday", "09.00 — 19.00"],
+  hoursLine: "Tue–Sun · 09:00–19:00",
+  /** Companion to `hoursLine`, for surfaces that list the closed day too. */
+  closedLine: "Monday · Closed",
+  /** Sentence form, for prose and meta descriptions. */
+  hoursSentence: "Tue–Sun 09:00–19:00, closed Monday",
   openDays: [
-    "Monday",
     "Tuesday",
     "Wednesday",
     "Thursday",
     "Friday",
     "Saturday",
+    "Sunday",
   ],
-  opens: "08:30",
+  /** Feeds the `opens: 00:00 / closes: 00:00` closed-day spec in JSON-LD. */
+  closedDays: ["Monday"],
+  opens: "09:00",
   closes: "19:00",
 
   currency: "LKR",
@@ -62,6 +75,14 @@ export const site = {
   social: {
     facebook: "https://www.facebook.com/www.bikehouse.lk/",
   },
+
+  /**
+   * The listing's public reviews page on Google. Synced testimonials link here
+   * so a visitor can check a quote against the source: the Business Profile API
+   * exposes no per-review permalink, only an owner-reply URL. Leave empty and
+   * the attribution renders as plain text instead of a link.
+   */
+  googleReviewsUrl: "",
 
   /** Marques the workshop is equipped for. Feeds the marquee and JSON-LD. */
   marques: [
