@@ -45,7 +45,7 @@ export const service = defineType({
           { title: "Wrench (custom)", value: "wrench" },
           { title: "Droplet (oil)", value: "droplet" },
           { title: "Alert (accident)", value: "alert" },
-          { title: "Disc (tire & chain)", value: "disc" },
+          { title: "Disc (brake / sprocket)", value: "disc" },
           { title: "Bolt (electrical)", value: "bolt" },
         ],
       },
@@ -154,6 +154,57 @@ export const service = defineType({
       of: [{ type: "string" }],
       description:
         "Optional monospace terminal lines rendered instead of the image — used by ECU Diagnostics.",
+    }),
+    defineField({
+      name: "gallery",
+      title: "Gallery",
+      type: "array",
+      description:
+        "Work from this service line, shown as a masonry wall on the service's " +
+        "own page. Photo heights vary by design — a mix of portrait and " +
+        "landscape reads better than a uniform set.",
+      of: [
+        defineField({
+          name: "shot",
+          title: "Photo",
+          type: "object",
+          fields: [
+            defineField({
+              name: "image",
+              title: "Image",
+              type: "image",
+              options: { hotspot: true },
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: "story",
+              title: "Story",
+              type: "text",
+              rows: 3,
+              description:
+                "Optional. What the photo shows, or what happened on this job — " +
+                "printed under the photo. Leave empty for a picture that speaks " +
+                "for itself.",
+            }),
+            defineField({
+              name: "alt",
+              title: "Alt Text",
+              type: "string",
+              description:
+                "For screen readers. Optional when there is a story, which is " +
+                "read in its place.",
+            }),
+          ],
+          preview: {
+            select: { media: "image", story: "story", alt: "alt" },
+            prepare: ({ media, story, alt }) => ({
+              title: alt || story || "Photo",
+              subtitle: story ? "Has story" : "No story",
+              media,
+            }),
+          },
+        }),
+      ],
     }),
     defineField({
       name: "body",

@@ -132,6 +132,23 @@ export interface ServiceBackground {
   video?: string;
 }
 
+/**
+ * One photo on a service's gallery wall.
+ *
+ * `width`/`height` are the asset's own pixel dimensions, carried so the masonry
+ * column can reserve the right box before the image loads — without them a wall
+ * of mixed portrait and landscape shots reflows on every decode.
+ */
+export interface ServiceShot {
+  image: string;
+  width: number;
+  height: number;
+  /** Optional caption printed under the photo. */
+  story?: string;
+  /** Screen-reader description. The story stands in when this is absent. */
+  alt?: string;
+}
+
 export interface Service {
   slug: string;
   order: number;
@@ -161,4 +178,6 @@ export interface Service {
   readout?: string[];
   /** Optional image or video behind the card on the services grid. */
   background?: ServiceBackground;
+  /** Masonry wall of work from this service line, on its own page. */
+  gallery?: ServiceShot[];
 }

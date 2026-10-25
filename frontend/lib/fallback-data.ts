@@ -28,6 +28,28 @@ export const fallbackServices: Service[] = [
     ],
     image: "/img/diagnostic-work.jpg",
     background: { kind: "image", image: "/img/diagnostic-work.jpg" },
+    gallery: [
+      {
+        image: "/img/diagnostic-work.jpg",
+        width: 640,
+        height: 1136,
+        story:
+          "A top-end strip-down part way through. Every fastener comes out in order and goes back to the torque figure in the manual \u2014 not to feel.",
+      },
+      {
+        image: "/img/cbr1000rr-front.jpg",
+        width: 1536,
+        height: 2048,
+        alt: "A CBR1000RR on the workshop floor",
+      },
+      {
+        image: "/img/red-supermoto.jpg",
+        width: 2048,
+        height: 1536,
+        story:
+          "Run-in done, panels back on. Nothing leaves the floor until it has been ridden.",
+      },
+    ],
     body: serviceBodies["engine-repairs"],
   },
   {
@@ -128,6 +150,34 @@ export const fallbackServices: Service[] = [
     ],
     image: "/img/red-supermoto.jpg",
     background: { kind: "image", image: "/img/red-supermoto.jpg" },
+    gallery: [
+      {
+        image: "/img/red-supermoto.jpg",
+        width: 2048,
+        height: 1536,
+        story:
+          "Supermoto conversion, finished. Subframe shortened, lighting rewired, and the brackets fabricated here rather than adapted from something else.",
+      },
+      {
+        image: "/img/d-tracker-orange.jpg",
+        width: 1152,
+        height: 2048,
+        alt: "An orange D-Tracker after conversion",
+      },
+      {
+        image: "/img/blue-wr-twins.jpg",
+        width: 1536,
+        height: 2048,
+        story:
+          "A pair of WRs built to the same spec for two riders who wanted to ride together.",
+      },
+      {
+        image: "/img/mural-rider.jpg",
+        width: 720,
+        height: 960,
+        alt: "The mural inside the workshop",
+      },
+    ],
     body: serviceBodies["custom-modifications"],
   },
   {
