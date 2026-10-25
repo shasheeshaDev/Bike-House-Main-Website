@@ -8,6 +8,7 @@ import PageHero from "@/components/page-hero";
 import RichBody from "@/components/rich-body";
 import SectionHead from "@/components/section-head";
 import ServiceCard from "@/components/service-card";
+import ServiceGallery from "@/components/service-gallery";
 import { getService, getServices } from "@/lib/data";
 import { breadcrumbSchema, pageMetadata, serviceSchema } from "@/lib/seo";
 import { site } from "@/lib/site";
@@ -110,8 +111,21 @@ export default async function ServiceDetailPage({
         </div>
       </section>
 
-      {others.length > 0 && (
+      {service.gallery && service.gallery.length > 0 && (
         <section className="section section-alt">
+          <div className="container">
+            <SectionHead
+              label="[ From the Floor ]"
+              heading={"The work,\nphotographed."}
+              meta={`${service.gallery.length} ${service.gallery.length === 1 ? "Photo" : "Photos"}`}
+            />
+            <ServiceGallery shots={service.gallery} serviceTitle={service.title} />
+          </div>
+        </section>
+      )}
+
+      {others.length > 0 && (
+        <section className={`section${service.gallery?.length ? "" : " section-alt"}`}>
           <div className="container">
             <SectionHead
               label="[ Other Services ]"

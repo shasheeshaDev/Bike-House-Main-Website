@@ -104,6 +104,19 @@ for (const service of fallbackServices) {
     ...(backgroundRef(service.background)
       ? { background: backgroundRef(service.background) }
       : {}),
+    ...(service.gallery?.length
+      ? {
+          // Dimensions are not carried: Sanity derives them from the uploaded
+          // asset, and the query reads them back from image metadata.
+          gallery: service.gallery.map((shot, i) => ({
+            _type: "shot",
+            _key: `sh${i}`,
+            image: imageRef(shot.image),
+            ...(shot.story ? { story: shot.story } : {}),
+            ...(shot.alt ? { alt: shot.alt } : {}),
+          })),
+        }
+      : {}),
   });
 }
 

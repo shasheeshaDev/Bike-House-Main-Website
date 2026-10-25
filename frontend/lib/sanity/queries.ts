@@ -84,6 +84,9 @@ export const testimonialsQuery = defineQuery(`
 `);
 
 /**
+ * `gallery` carries each asset's real pixel dimensions, because the masonry
+ * wall sizes its boxes from the aspect ratio rather than guessing one.
+ *
  * The `background` projection flattens the schema's object into the
  * ServiceBackground shape the fallback bundle also returns: a single `image`
  * key, filled from either the image field or the video's poster, so the card
@@ -108,6 +111,13 @@ export const servicesQuery = defineQuery(`
       kind,
       "image": coalesce(image.asset->url, poster.asset->url),
       "video": video.asset->url
+    },
+    "gallery": gallery[defined(image.asset)]{
+      "image": image.asset->url,
+      "width": image.asset->metadata.dimensions.width,
+      "height": image.asset->metadata.dimensions.height,
+      story,
+      alt
     }
   }
 `);
